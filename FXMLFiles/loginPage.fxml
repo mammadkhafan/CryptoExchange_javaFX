@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #01579B;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SignInControllers.LoginController">
+   <children>
+      <AnchorPane layoutX="145.0" layoutY="141.0" prefHeight="417.0" prefWidth="450.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="176.0" layoutY="14.0" text="Login">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Line endX="67.99996948242188" layoutX="219.0" layoutY="72.0" startX="-60.800018310546875" strokeWidth="3.0" />
+            <GridPane layoutX="35.0" layoutY="103.0" prefHeight="91.0" prefWidth="373.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.20004272460938" minWidth="10.0" prefWidth="62.39996337890625" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="311.2000366210938" minWidth="10.0" prefWidth="311.2000366210938" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="60.4" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="60.4" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TextField fx:id="usernameTextField" onKeyPressed="#checkUsername" prefHeight="30.0" prefWidth="312.0" promptText="Username" GridPane.columnIndex="1" />
+                  <FontAwesomeIcon glyphName="USER" size="30" text="" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <FontAwesomeIcon glyphName="LOCK" size="30" text="" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <PasswordField fx:id="passwordPasswordField" onKeyPressed="#checkPassword" prefHeight="30.0" prefWidth="312.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="usernameMessage" prefHeight="18.0" prefWidth="312.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="passwordMessage" layoutX="72.0" layoutY="40.0" prefHeight="18.0" prefWidth="312.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label alignment="CENTER" layoutX="123.0" layoutY="209.0" prefHeight="18.0" prefWidth="132.0" text="Enter CAPTCHA Code:" />
+            <Button fx:id="loginButton" layoutX="103.0" layoutY="286.0" mnemonicParsing="false" onAction="#afterLogin" prefHeight="40.0" prefWidth="240.0" text="Login" />
+            <Button fx:id="signUpButton" layoutX="176.0" layoutY="351.0" mnemonicParsing="false" onAction="#afterSignUp" prefHeight="26.0" prefWidth="106.0" text="Sign up" />
+            <Button fx:id="forgetPasswordButton" layoutX="296.0" layoutY="351.0" mnemonicParsing="false" onAction="#afterForgetPassword" prefHeight="26.0" prefWidth="106.0" text="Forgot Password" />
+            <PasswordField fx:id="captchaCodePasswordField" layoutX="123.0" layoutY="236.0" prefHeight="26.0" prefWidth="106.0" promptText="CAPTCHA code" />
+            <Label layoutX="35.0" layoutY="349.0" text="Not a member">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="58.0" fitWidth="160.0" layoutX="263.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Image/CAPTCHA_code.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="captchaCodeMessage" layoutX="123.0" layoutY="262.0" prefHeight="18.0" prefWidth="106.0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="418.0" fitWidth="167.0" layoutX="596.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/coins.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
