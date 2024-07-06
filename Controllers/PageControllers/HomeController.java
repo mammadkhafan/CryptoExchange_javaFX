@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import java.util.ArrayList;
 
 public class HomeController implements Initializable{
     @FXML
@@ -26,27 +27,12 @@ public class HomeController implements Initializable{
     private final int maxPriceColumn = 4;
     private final int minPriceColumn = 5;
 
-    private void addRaw(CoinsInfo coin) {
-        gridPane.getRowConstraints().add(new RowConstraints());
-
-        int row = gridPane.getRowCount() - 1;
-
-        setRaw(coin, row);
-    }
-
-    private void setRaw(CoinsInfo coin, int i) {
-        gridPane.setVgap(10);
-
-        ImageView imageView = new ImageView();
-        imageView.setImage(coin.getCoinsImage());
-
-        gridPane.add(new Label(coin.getName()), assetColumn, i);
-        gridPane.add(imageView, imageColumn, i);  
-        gridPane.add(new Label(coin.getPrice()), priceColumn, i);
-        gridPane.add(new Label(coin.getChange()), changeColumn, i);
-        gridPane.add(new Label(coin.getMaxPrice()), maxPriceColumn, i);
-        gridPane.add(new Label(coin.getMinPrice()), minPriceColumn, i);
-    }
+    private ArrayList<Label> assets = new ArrayList<>();
+    private ArrayList<ImageView> images = new ArrayList<>();
+    private ArrayList<Label> prices = new ArrayList<>();
+    private ArrayList<Label> changes = new ArrayList<>();
+    private ArrayList<Label> maxPrices = new ArrayList<>();
+    private ArrayList<Label> minPrices = new ArrayList<>();
 
     private CoinsInfo BTC = new CoinsInfo("BTC", "../../Image/coinIcons/BTC.png");
     private CoinsInfo DOGE = new CoinsInfo("DOGE", "../../Image/coinIcons/DOGE.png");
@@ -55,6 +41,46 @@ public class HomeController implements Initializable{
 
     private CoinsInfo[] allCoins = {BTC, DOGE, DASH, LTC};
 
+
+    private void addRow(CoinsInfo coin) {
+        gridPane.getRowConstraints().add(new RowConstraints());
+
+        int row = gridPane.getRowCount() - 1;
+
+        gridPane.setVgap(10);
+
+        Label asset = new Label(coin.getName());
+        ImageView image = new ImageView();
+        image.setImage(coin.getCoinsImage());
+        Label price = new Label(coin.getPrice());
+        Label change = new Label(coin.getChange());
+        Label maxPrice = new Label(coin.getMaxPrice());
+        Label minPrice = new Label(coin.getMinPrice());
+
+        gridPane.add(asset, assetColumn, row);
+        gridPane.add(image, imageColumn, row);
+        gridPane.add(price, priceColumn, row);
+        gridPane.add(change, changeColumn, row);
+        gridPane.add(maxPrice, maxPriceColumn, row);
+        gridPane.add(minPrice, minPriceColumn, row);
+
+        assets.add(asset);
+        images.add(image);
+        prices.add(price);
+        changes.add(change);
+        maxPrices.add(maxPrice);
+        minPrices.add(minPrice);
+        
+    }
+
+    private void setRow(CoinsInfo coin, int row) {
+        assets.get(row - 1).setText(coin.getName());
+        images.get(row - 1).setImage(coin.getCoinsImage());
+        prices.get(row - 1).setText(coin.getPrice());
+        changes.get(row - 1).setText(coin.getChange());
+        maxPrices.get(row - 1).setText(coin.getMaxPrice());
+        minPrices.get(row - 1).setText(coin.getMinPrice());
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,13 +105,13 @@ public class HomeController implements Initializable{
         LTC.setMinPrice("3,693,200");
 
         for (int i = 0; i < allCoins.length; i++) {
-            addRaw(allCoins[i]);
+            addRow(allCoins[i]);
         }
     }
 
     private void showTabel() {
         for (int i = 0; i < allCoins.length; i++) {
-            setRaw(allCoins[i], i + 1);
+            setRow(allCoins[i], i + 1);
         }
     }
 
