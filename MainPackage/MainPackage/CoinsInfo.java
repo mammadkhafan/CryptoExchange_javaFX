@@ -4,7 +4,8 @@ import javafx.scene.image.Image;
 
 public class CoinsInfo {
     private Image coinsImage;
-    private String name, price, change, maxPrice, minPrice;
+    private String name, change;
+    private double price, maxPrice, minPrice;
 
     public CoinsInfo(String name, String imagePath) {
         setName(name);
@@ -26,12 +27,13 @@ public class CoinsInfo {
     } 
 
 
+
     public Image getCoinsImage() {
         return this.coinsImage;
     }
 
-    public void setCoinsImage(Image coinsIcon) {
-        this.coinsImage = coinsIcon;
+    public void setCoinsImage(Image coinsImage) {
+        this.coinsImage = coinsImage;
     }
 
     public String getName() {
@@ -42,36 +44,37 @@ public class CoinsInfo {
         this.name = name;
     }
 
-    public String getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getChange() {
         return this.change;
     }
 
-    public void setChange(String change) {
-        this.change = change;
+    public void setChange(String changel) {
+        this.change = changel;
     }
 
-    public String getMaxPrice() {
+    public double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getMaxPrice() {
         return this.maxPrice;
     }
 
-    public void setMaxPrice(String maxPrice) {
+    public void setMaxPrice(double maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public String getMinPrice() {
+    public double getMinPrice() {
         return this.minPrice;
     }
 
-    public void setMinPrice(String minPrice) {
+    public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
+    
 
 }

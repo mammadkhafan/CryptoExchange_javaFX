@@ -10,18 +10,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeController implements Initializable{
     @FXML
     private GridPane gridPane;
+
     @FXML
-    private RadioMenuItem sortByPriceRadioMenuItem, 
-            sortAscendingByChangeRadioMenuItem, sortDescendingByChangeRadioMenuItem,
-            sortAscendingByMaxPriceRadioMenuItem, sortDescendingByMaxPriceRadioMenuItem,
-            sortAscendingByMinPriceRadioMenuItem, sortDescendingByMinPriceRadioMenuItem;
+    private Label assetLabel;
 
     private final int assetColumn = 0;
     private final int imageColumn = 1;
@@ -42,7 +42,14 @@ public class HomeController implements Initializable{
     private CoinsInfo DASH = new CoinsInfo("DASH", "../../Image/coinIcons/DASH.png");
     private CoinsInfo LTC = new CoinsInfo("LTC", "../../Image/coinIcons/LTC.png");
 
-    private CoinsInfo[] allCoins = {BTC, DOGE, DASH, LTC};
+    private ArrayList<CoinsInfo> allCoins = new ArrayList<>();
+
+    {
+        allCoins.add(BTC);
+        allCoins.add(DOGE);
+        allCoins.add(DASH);
+        allCoins.add(LTC);
+    }
 
 
     private void addRow(CoinsInfo coin) {
@@ -55,10 +62,10 @@ public class HomeController implements Initializable{
         Label asset = new Label(coin.getName());
         ImageView image = new ImageView();
         image.setImage(coin.getCoinsImage());
-        Label price = new Label(coin.getPrice());
+        Label price = new Label(Double.toString(coin.getPrice()));
         Label change = new Label(coin.getChange());
-        Label maxPrice = new Label(coin.getMaxPrice());
-        Label minPrice = new Label(coin.getMinPrice());
+        Label maxPrice = new Label(Double.toString(coin.getMaxPrice()));
+        Label minPrice = new Label(Double.toString(coin.getMinPrice()));
 
         gridPane.add(asset, assetColumn, row);
         gridPane.add(image, imageColumn, row);
@@ -79,10 +86,10 @@ public class HomeController implements Initializable{
     private void setRow(CoinsInfo coin, int row) {
         assets.get(row - 1).setText(coin.getName());
         images.get(row - 1).setImage(coin.getCoinsImage());
-        prices.get(row - 1).setText(coin.getPrice());
+        prices.get(row - 1).setText(Double.toString(coin.getPrice()));
         changes.get(row - 1).setText(coin.getChange());
-        maxPrices.get(row - 1).setText(coin.getMaxPrice());
-        minPrices.get(row - 1).setText(coin.getMinPrice());
+        maxPrices.get(row - 1).setText(Double.toString(coin.getMaxPrice()));
+        minPrices.get(row - 1).setText(Double.toString(coin.getMinPrice()));
     }
 
     @Override
@@ -92,134 +99,115 @@ public class HomeController implements Initializable{
         DASH.setChange("+4.83%");
         LTC.setChange("+3.27%");
 
-        BTC.setPrice("2,465,907,360");
-        DOGE.setPrice("4,525");
-        DASH.setPrice("1,633,184");
-        LTC.setPrice("3,693,200");
+        BTC.setPrice(246590736);
+        DOGE.setPrice(4525);
+        DASH.setPrice(1633184);
+        LTC.setPrice(3693200);
 
-        BTC.setMaxPrice("2,465,907,360");
-        DOGE.setMaxPrice("4,525");
-        DASH.setMaxPrice("1,633,184");
-        LTC.setMaxPrice("3,693,200");
+        BTC.setMaxPrice((246590736));
+        DOGE.setMaxPrice(4525);
+        DASH.setMaxPrice(1633184);
+        LTC.setMaxPrice(3693200);
 
-        BTC.setMinPrice("2,465,907,360");
-        DOGE.setMinPrice("4,525");
-        DASH.setMinPrice("1,633,184");
-        LTC.setMinPrice("3,693,200");
+        BTC.setMinPrice(246590736);
+        DOGE.setMinPrice(4525);
+        DASH.setMinPrice(1633184);
+        LTC.setMinPrice(3693200);
 
-        for (int i = 0; i < allCoins.length; i++) {
-            addRow(allCoins[i]);
+        for (int i = 0; i < allCoins.size(); i++) {
+            addRow(allCoins.get(i));
         }
     }
 
     private void showTabel() {
-        for (int i = 0; i < allCoins.length; i++) {
-            setRow(allCoins[i], i + 1);
+        for (int i = 0; i < allCoins.size(); i++) {
+            setRow(allCoins.get(i), i + 1);
         }
     }
 
     @FXML
     private void sortByPrice() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getPrice()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.PRICE, SortType.ASCENDING);
     }
 
     @FXML
     private void sortAscendingByChange() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getChange())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getChange()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.CHANGE, SortType.ASCENDING);
     }
 
     @FXML
     private void sortDescendingByChange() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getChange())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getChange()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.CHANGE, SortType.DESCENDING);
     }
 
     @FXML
     private void sortAscendingByMaxPrice() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.MAXPRICE, SortType.ASCENDING);
     }
 
     @FXML
     private void sortDescendingByMaxPrice() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.MAXPRICE, SortType.DESCENDING);
     }
 
     @FXML
     private void sortAscendingByMinPrice() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getMinPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getMinPrice()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
-
-        showTabel();
+        sortCoins(SortBy.MINPRICE, SortType.ASCENDING);
     }
 
     @FXML
     private void sortDescendingByMinPrice() {
-        for (int i = allCoins.length - 1; i > -1; i--) {
-            for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
-                    CoinsInfo temt = allCoins[j];
-                    allCoins[j] = allCoins[j + 1];
-                    allCoins[j + 1] = temt;
-                }
-            }
-        } 
+        sortCoins(SortBy.MINPRICE, SortType.DESCENDING);
+    }
 
+    @FXML 
+    private void A_zSort() {
+        sortCoins(SortBy.ALFABET, SortType.ASCENDING);
+    }
+
+    @FXML 
+    private void z_ASort() {
+        sortCoins(SortBy.ALFABET, SortType.DESCENDING);
+    }
+
+    private void sortCoins(SortBy sortBy, SortType sortType) {
+        switch (sortBy) {
+            case ALFABET:
+                if (sortType == SortType.ASCENDING) {
+                    Collections.sort(allCoins, (c1, c2) -> c1.getName().compareTo(c2.getName()));
+                } else {
+                    Collections.sort(allCoins, (c1, c2) -> c2.getName().compareTo(c1.getName()));
+                }
+                break;
+            case PRICE:
+                if (sortType == SortType.DESCENDING) {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getPrice(), c2.getPrice()));
+                } else {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getPrice(), c1.getPrice()));
+                }
+                break;
+            case CHANGE:
+                if (sortType == SortType.DESCENDING) {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c1.getChange())), Double.parseDouble(ExtractNumber(c2.getChange()))));
+                } else {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c2.getChange())), Double.parseDouble(ExtractNumber(c1.getChange()))));
+                }
+                break;
+            case MAXPRICE:
+                if (sortType == SortType.DESCENDING) {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getMaxPrice(), c2.getMaxPrice()));
+                } else {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getMaxPrice(), c1.getMaxPrice()));
+                }
+                break;
+            case MINPRICE:
+                if (sortType == SortType.DESCENDING) {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getMinPrice(), c2.getMinPrice()));
+                } else {
+                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getMinPrice(), c1.getMinPrice()));
+                }
+        }
+    
         showTabel();
     }
 
@@ -235,3 +223,38 @@ public class HomeController implements Initializable{
 
 
 }
+
+enum SortBy {
+    ALFABET("ALFABET"),
+    PRICE("PRICE"),
+    CHANGE("CHANGE"),
+    MAXPRICE("MAXPRICE"),
+    MINPRICE("MINPRICE");
+
+    private String by;
+
+    SortBy(String description) {
+        this.by = by;
+    }
+
+    public String getDescription() {
+        return by;
+    }
+}
+
+enum SortType {
+    ASCENDING("Ascending"),
+    DESCENDING("Descending");
+
+    private String type;
+
+    SortType(String description) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return type;
+    }
+}
+
+
