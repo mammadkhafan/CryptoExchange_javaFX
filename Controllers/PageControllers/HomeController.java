@@ -18,7 +18,10 @@ public class HomeController implements Initializable{
     @FXML
     private GridPane gridPane;
     @FXML
-    private RadioMenuItem sortByPriceRadioMenuItem;
+    private RadioMenuItem sortByPriceRadioMenuItem, 
+            sortAscendingByChangeRadioMenuItem, sortDescendingByChangeRadioMenuItem,
+            sortAscendingByMaxPriceRadioMenuItem, sortDescendingByMaxPriceRadioMenuItem,
+            sortAscendingByMinPriceRadioMenuItem, sortDescendingByMinPriceRadioMenuItem;
 
     private final int assetColumn = 0;
     private final int imageColumn = 1;
@@ -119,7 +122,97 @@ public class HomeController implements Initializable{
     private void sortByPrice() {
         for (int i = allCoins.length - 1; i > -1; i--) {
             for (int j = 0; j < i; j++) {   
-                if (Double.parseDouble(ExtractNumber(allCoins[j].getPrice())) < Double.parseDouble(ExtractNumber(allCoins[j+1].getPrice()))) {
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getPrice()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortAscendingByChange() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getChange())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getChange()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortDescendingByChange() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getChange())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getChange()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortAscendingByMaxPrice() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortDescendingByMaxPrice() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortAscendingByMinPrice() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getMinPrice())) <= Double.parseDouble(ExtractNumber(allCoins[j+1].getMinPrice()))) {
+                    CoinsInfo temt = allCoins[j];
+                    allCoins[j] = allCoins[j + 1];
+                    allCoins[j + 1] = temt;
+                }
+            }
+        } 
+
+        showTabel();
+    }
+
+    @FXML
+    private void sortDescendingByMinPrice() {
+        for (int i = allCoins.length - 1; i > -1; i--) {
+            for (int j = 0; j < i; j++) {   
+                if (Double.parseDouble(ExtractNumber(allCoins[j].getMaxPrice())) >= Double.parseDouble(ExtractNumber(allCoins[j+1].getMaxPrice()))) {
                     CoinsInfo temt = allCoins[j];
                     allCoins[j] = allCoins[j + 1];
                     allCoins[j + 1] = temt;
