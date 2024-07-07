@@ -5,9 +5,8 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,10 +42,6 @@ public class ForgetPasswordController extends SignInMethods{
 
     private String code;
     private boolean isSend = false;
-    
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
 
     @FXML
@@ -95,14 +90,18 @@ public class ForgetPasswordController extends SignInMethods{
     }
 
     @FXML
-    public void afterLogin() {
+    public void afterLogin(ActionEvent event) throws IOException {
         Label[] messages = 
                 {emailMessage, 
                 codeMessage, 
                 newPasswordMessage, 
                 repeatPasswordMessage};
         if (isEveryThingOk(messages)) {
-            System.out.println("wellcom to user pannel");
+            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
@@ -120,7 +119,7 @@ public class ForgetPasswordController extends SignInMethods{
     }
 
 
-    public static void sendForgotPasswordEmail(String recipientEmail, String newPassword) {
+    public void sendForgotPasswordEmail(String recipientEmail, String newPassword) {
         final String username = "mywallet.exchanger@gmail.com";
         final String password = "licmwgwyuunjovnz";
 
@@ -147,10 +146,12 @@ public class ForgetPasswordController extends SignInMethods{
 
             Transport.send(message);
 
-            System.out.println("Forgot password email sent successfully");
+            toCorrect(emailMessage);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            emailMessage.setTextFill(orang);
+
+            emailMessage.setText(e.getMessage());
         }
     }
 }

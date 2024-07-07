@@ -19,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
@@ -27,7 +26,7 @@ import java.io.File;
 
 public class SignUpController extends SignInMethods implements Initializable{
     @FXML
-    private Label firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage, repeatPasswordMessage, captchaMessage, profileImageName;
+    private Label firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage, repeatPasswordMessage, captchaCodeMessage, profileImageName;
 
     @FXML
     private TextField firstNameTextField, lastNameTextField, usernameTextField, emailTextField, phoneNumberTextField;
@@ -47,7 +46,7 @@ public class SignUpController extends SignInMethods implements Initializable{
     @FXML
     private ComboBox<String> countryNumbersComboBox;
 
-    private Image captchaImage;
+    private int randomIndex;
 
     private String[] countryNumbers = 
     {"Brazil +55", 
@@ -77,29 +76,6 @@ public class SignUpController extends SignInMethods implements Initializable{
     "Vietnam +84", 
     "Yemen +967"};
 
-    private Image[] captchaImages =
-    {
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha1.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha2.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha3.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha4.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha5.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha6.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha7.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha8.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha9.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha10.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha11.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha12.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha13.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha14.png")),
-    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha15.png"))
-    };
-    
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
 
 
     @Override
@@ -109,8 +85,7 @@ public class SignUpController extends SignInMethods implements Initializable{
     }
 
     public void changeCaptchaCodeImage() {
-        int lastIndexOfCaptchase = 10;
-        int randomIndex = (int)(Math.random() * (lastIndexOfCaptchase));        
+        randomIndex = (int)(Math.random() * (captchaImages.length));        
         captchaImage = captchaImages[randomIndex];
         captchaImageView.setImage(captchaImage);
     }
@@ -148,7 +123,7 @@ public class SignUpController extends SignInMethods implements Initializable{
 
     @FXML
     private void checkCaptchaCode(ActionEvent event) {
-        // Implement your logic here
+        checkCaptcha(captchaCodePasswordField, captchaCodeMessage, captchaCodes[randomIndex], ErrorMessage.captchaErrorMessage);
     }
 
     @FXML
@@ -186,10 +161,14 @@ public class SignUpController extends SignInMethods implements Initializable{
     }
 
     @FXML
-    private void afterCreateMyAccount(ActionEvent event) {
-        Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaMessage, profileImageName};
+    private void afterCreateMyAccount(ActionEvent event) throws IOException {
+        Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaCodeMessage, profileImageName};
         if (isEveryThingOk(messages)) {
-            System.out.println("wellcom to user pannel");
+            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
@@ -200,12 +179,10 @@ public class SignUpController extends SignInMethods implements Initializable{
 
     @FXML
     private void afterBack(MouseEvent event) throws IOException {
-        // Implement your logic here
         root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/LoginPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 }

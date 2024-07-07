@@ -65,7 +65,7 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label fx:id="captchaMessage" layoutX="311.0" layoutY="294.0" prefHeight="15.0" prefWidth="214.0">
+            <Label fx:id="captchaCodeMessage" layoutX="311.0" layoutY="294.0" prefHeight="15.0" prefWidth="214.0">
                <font>
                   <Font size="10.0" />
                </font>

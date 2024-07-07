@@ -2,12 +2,12 @@ package HomePagePackage;
 
 import java.util.List;
 
-public class CryptoData {
+public class RowOfCsvFile {
     private String date;
     private String time;
     private List<Double> prices;
 
-    public CryptoData(String date, String time, List<Double> prices) {
+    public RowOfCsvFile(String date, String time, List<Double> prices) {
         this.date = date;
         this.time = time;
         this.prices = prices;

@@ -52,26 +52,23 @@
                   </Label>
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="123.0" layoutY="209.0" prefHeight="18.0" prefWidth="132.0" text="Enter CAPTCHA Code:" />
+            <Label layoutX="103.0" layoutY="209.0" prefHeight="18.0" prefWidth="132.0" text="Enter CAPTCHA Code:" />
             <Button fx:id="loginButton" layoutX="103.0" layoutY="286.0" mnemonicParsing="false" onAction="#afterLogin" prefHeight="40.0" prefWidth="240.0" text="Login" />
             <Button fx:id="signUpButton" layoutX="176.0" layoutY="351.0" mnemonicParsing="false" onAction="#afterSignUp" prefHeight="26.0" prefWidth="106.0" text="Sign up" />
             <Button fx:id="forgetPasswordButton" layoutX="296.0" layoutY="351.0" mnemonicParsing="false" onAction="#afterForgetPassword" prefHeight="26.0" prefWidth="106.0" text="Forgot Password" />
-            <PasswordField fx:id="captchaCodePasswordField" layoutX="123.0" layoutY="236.0" prefHeight="26.0" prefWidth="106.0" promptText="CAPTCHA code" />
-            <Label layoutX="35.0" layoutY="349.0" text="Not a member">
+            <PasswordField fx:id="captchaCodePasswordField" layoutX="103.0" layoutY="236.0" onAction="#checkCaptchaCode" prefHeight="26.0" prefWidth="106.0" promptText="CAPTCHA code" />
+            <Label layoutX="35.0" layoutY="349.0" text="Are you New?">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <ImageView fitHeight="58.0" fitWidth="160.0" layoutX="263.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Image/CAPTCHA_code.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="captchaCodeMessage" layoutX="123.0" layoutY="262.0" prefHeight="18.0" prefWidth="106.0">
+            <ImageView fx:id="captchaImageView" fitHeight="58.0" fitWidth="160.0" layoutX="249.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="captchaCodeMessage" layoutX="103.0" layoutY="263.0" prefHeight="18.0" prefWidth="160.0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
+            <FontAwesomeIcon fx:id="changeIcon" glyphName="UNDO" layoutX="220.0" layoutY="257.0" onMouseClicked="#afterChange" size="2em" text="" wrappingWidth="18.85714340209961" />
          </children>
       </AnchorPane>
       <ImageView fitHeight="418.0" fitWidth="167.0" layoutX="596.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">

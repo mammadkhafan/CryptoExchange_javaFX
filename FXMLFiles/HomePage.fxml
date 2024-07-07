@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.HomeController">
    <children>
-      <MenuButton layoutX="862.0" layoutY="1.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="68.0" text="Pages">
+      <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
         <items>
           <MenuItem disable="true" mnemonicParsing="false" text="Home" />
           <MenuItem mnemonicParsing="false" text="Exchange" />
@@ -25,11 +29,6 @@
             <MenuItem mnemonicParsing="false" text="Profile" />
         </items>
       </MenuButton>
-      <Label alignment="CENTER" layoutY="1.0" prefHeight="26.0" prefWidth="142.0" text="Crypto Exchange">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
       <GridPane fx:id="gridPane" layoutX="202.0" layoutY="118.0" prefHeight="20.0" prefWidth="526.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="45.0" />
@@ -92,10 +91,17 @@
             <ColorAdjust />
          </effect>
       </GridPane>
-      <Label layoutX="431.0" layoutY="-3.0" prefHeight="36.0" prefWidth="68.0" text="Home">
+      <Label alignment="CENTER" layoutX="379.0" layoutY="-8.0" prefHeight="59.0" prefWidth="172.0" style="-fx-text-fill: GREEN;" text="Home">
          <font>
-            <Font size="23.0" />
+            <Font size="42.0" />
          </font>
       </Label>
+      <Line endX="829.0000610351562" layoutX="100.0" layoutY="53.0" startX="-100.0" />
+      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="41.0" onMouseClicked="#openPagesMenuButton" size="3em" wrappingWidth="31.20013427734375" />
+      <ImageView fitHeight="53.0" fitWidth="129.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/CompanyLogo.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

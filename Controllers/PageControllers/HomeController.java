@@ -6,6 +6,7 @@ import MainPackage.CoinsInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import HomePagePackage.CryptoData;
+import HomePagePackage.RowOfCsvFile;
 
 public class HomeController implements Initializable{
     @FXML
@@ -26,6 +27,9 @@ public class HomeController implements Initializable{
 
     @FXML
     private Label assetLabel;
+
+    @FXML
+    private MenuButton pageMenuButton;
 
     private final int assetColumn = 1;
     private final int imageColumn = 0;
@@ -49,7 +53,7 @@ public class HomeController implements Initializable{
 
     private ArrayList<CoinsInfo> allCoins = new ArrayList<>();
 
-    List<CryptoData> cryptoDataList = new ArrayList<>();
+    List<RowOfCsvFile> RowOfCsvFileList = new ArrayList<>();
 
 
     private void addRow(CoinsInfo coin) {
@@ -137,8 +141,8 @@ public class HomeController implements Initializable{
                     }
                 }
 
-                CryptoData cryptoData = new CryptoData(date, time, prices);
-                cryptoDataList.add(cryptoData);
+                RowOfCsvFile RowOfCsvFile = new RowOfCsvFile(date, time, prices);
+                RowOfCsvFileList.add(RowOfCsvFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -149,14 +153,14 @@ public class HomeController implements Initializable{
         double[] nowPrices = new double[allCoins.size()];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
-        for (int i = 0; i < cryptoDataList.size() - 1; i++) {
+        for (int i = 0; i < RowOfCsvFileList.size() - 1; i++) {
             
-            LocalTime time1 = LocalTime.parse(cryptoDataList.get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter);            
+            LocalTime time1 = LocalTime.parse(RowOfCsvFileList.get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(RowOfCsvFileList.get(i + 1).getTime(), formatter);            
 
             if (currentTimeIsbetween(time1, time2)) {
                 for (int j = 0; j < nowPrices.length; j++) {
-                    nowPrices[j] = getPriceOfCoin(cryptoDataList.get(i), Coins.getCoinOfIndex(j));
+                    nowPrices[j] = getPriceOfCoin(RowOfCsvFileList.get(i), Coins.getCoinOfIndex(j));
                 }
                 break;
             }
@@ -167,8 +171,8 @@ public class HomeController implements Initializable{
         }
     }
 
-    private double getPriceOfCoin(CryptoData cryptoData, Coins coin) {
-        return cryptoData.getPriceAt(coin.getIndex());
+    private double getPriceOfCoin(RowOfCsvFile RowOfCsvFile, Coins coin) {
+        return RowOfCsvFile.getPriceAt(coin.getIndex());
     }
 
     private void setMax_MInColumn(SetMax_MInColumn max_min) {
@@ -188,24 +192,24 @@ public class HomeController implements Initializable{
         double change = 0;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
-        for (int i = 0; i < cryptoDataList.size() - 1; i++) {
+        for (int i = 0; i < RowOfCsvFileList.size() - 1; i++) {
             
-            LocalTime time1 = LocalTime.parse(cryptoDataList.get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter);
+            LocalTime time1 = LocalTime.parse(RowOfCsvFileList.get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(RowOfCsvFileList.get(i + 1).getTime(), formatter);
 
             if (max_min.equals(SetMax_MInColumn.MAX))
-                maxPrice = Math.max(maxPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
+                maxPrice = Math.max(maxPrice, getPriceOfCoin(RowOfCsvFileList.get(i), coin));
             else
-                minPrice = Math.min(minPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
+                minPrice = Math.min(minPrice, getPriceOfCoin(RowOfCsvFileList.get(i), coin));
 
             if (currentTimeIsbetween(time1, time2)) {
                 double delta;
                 if (i == 0) {
-                    delta = getPriceOfCoin(cryptoDataList.get(i), coin) - getPriceOfCoin(cryptoDataList.get(cryptoDataList.size() - 1), coin);
-                    change = delta / getPriceOfCoin(cryptoDataList.get(cryptoDataList.size() - 1), coin);
+                    delta = getPriceOfCoin(RowOfCsvFileList.get(i), coin) - getPriceOfCoin(RowOfCsvFileList.get(RowOfCsvFileList.size() - 1), coin);
+                    change = delta / getPriceOfCoin(RowOfCsvFileList.get(RowOfCsvFileList.size() - 1), coin);
                 } else {
-                    delta = getPriceOfCoin(cryptoDataList.get(i), coin) - getPriceOfCoin(cryptoDataList.get(i - 1), coin);
-                    change = delta / getPriceOfCoin(cryptoDataList.get(i - 1), coin);
+                    delta = getPriceOfCoin(RowOfCsvFileList.get(i), coin) - getPriceOfCoin(RowOfCsvFileList.get(i - 1), coin);
+                    change = delta / getPriceOfCoin(RowOfCsvFileList.get(i - 1), coin);
                 }
                 
                 
@@ -346,6 +350,11 @@ public class HomeController implements Initializable{
             }
         }
         return extractedNumber;
+    }
+
+    @FXML
+    private void openPagesMenuButton() {
+        pageMenuButton.show();
     }
 
 

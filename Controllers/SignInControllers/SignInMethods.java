@@ -1,11 +1,59 @@
 package Controllers.SignInControllers;
 
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class SignInMethods {
+    protected Stage stage;
+    protected Scene scene;
+    protected Parent root;
+
+    protected Image captchaImage;
+
+    protected Image[] captchaImages =
+    {
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha1.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha2.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha3.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha4.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha5.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha6.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha7.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha8.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha9.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha10.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha11.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha12.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha13.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha14.png")),
+    new Image(getClass().getResourceAsStream("../../Image/captchas/captcha15.png"))
+    };
+
+    protected String[] captchaCodes =
+    {
+        "3EEkyrP", 
+        "3wr7H76",
+        "5ZVw4dS",
+        "75NP2DW",
+        "F5nGuKm",
+        "8t3Umzg",
+        "A8t6HbV",
+        "awf8pCB",
+        "B2V7KLp",
+        "blC5CIN",
+        "buPWUnT",
+        "bybNmeZ",
+        "dTaFKWK",
+        "EW8dS9H",
+        "3dIHDds"
+    };
 
     public enum Regex {
         emailRegex("^[a-zA-Z]{1,1}[a-zA-Z0-9-_.]{4,63}@[a-zA-Z]+\\.[a-zA-z]+$"),
@@ -26,7 +74,8 @@ public class SignInMethods {
         usernameErrorMessage("valid chars: (start with)a-Z 0-9 _"),
         passwordErrorMessage("valid chars: a-Z 0-9 (length: min 6-max 15)"),
         nameErrorMessage("valid chars: a-Z space"),
-        phoneNumberErrorMessage("valid chars: 0-9 (length: min 4-max 10)");
+        phoneNumberErrorMessage("valid chars: 0-9 (length: min 4-max 10)"),
+        captchaErrorMessage("your Input doesn't mach");
 
         public String errorMessage;
 
@@ -46,6 +95,14 @@ public class SignInMethods {
             toError(label, errMsg);
         } else if (isValid(input, regex)) {
             toCorrect(label);
+        }
+    }
+
+    public void checkCaptcha(PasswordField captchoPasswordField, Label label, String realCode, ErrorMessage errMsg) {
+        if (captchoPasswordField.getText().equals(realCode)) {
+            toCorrect(label);
+        } else {
+            toError(label, errMsg);
         }
     }
 

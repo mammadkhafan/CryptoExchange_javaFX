@@ -1,9 +1,13 @@
 package Controllers.SignInControllers;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,24 +15,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-public class LoginController extends SignInMethods{
+public class LoginController extends SignInMethods implements Initializable{
     @FXML
     private Button  loginButton, signUpButton, forgetPasswordButton;
+    
     @FXML
     private PasswordField  passwordPasswordField, captchaCodePasswordField;
+
     @FXML
     private Label   usernameMessage, passwordMessage, captchaCodeMessage;
 
     @FXML
     private TextField usernameTextField; 
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    @FXML
+    private ImageView captchaImageView;
 
+    private int randomIndex;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        changeCaptchaCodeImage();
+    }
 
     @FXML
     private void checkUsername(KeyEvent event) {
@@ -41,10 +54,19 @@ public class LoginController extends SignInMethods{
     }
 
     @FXML
-    public void afterLogin(ActionEvent event){
+    private void checkCaptchaCode(ActionEvent event) {
+        checkCaptcha(captchaCodePasswordField, captchaCodeMessage, captchaCodes[randomIndex], ErrorMessage.captchaErrorMessage);
+    }
+
+    @FXML
+    public void afterLogin(ActionEvent event) throws IOException{
         Label[] messages = {usernameMessage, passwordMessage, captchaCodeMessage};
         if (isEveryThingOk(messages)) {
-            System.out.println("Wellcome!");
+            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
@@ -65,7 +87,16 @@ public class LoginController extends SignInMethods{
         stage.setScene(scene);
         stage.show();
     }
-    
-                        
+
+    @FXML
+    private void afterChange() {
+        changeCaptchaCodeImage();
+    }
+
+    public void changeCaptchaCodeImage() {
+        randomIndex = (int)(Math.random() * (captchaImages.length));        
+        captchaImage = captchaImages[randomIndex];
+        captchaImageView.setImage(captchaImage);
+    }
 }
 
