@@ -2,15 +2,11 @@ package Controllers.PageControllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import MainPackage.CoinsInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
@@ -107,6 +103,8 @@ public class HomeController implements Initializable{
         allCoins.add(GBP);
 
         setPrices();
+        setMax_MInColumn(SetMax_MInColumn.MAX);
+        setMax_MInColumn(SetMax_MInColumn.MIN);
         showTabelForFirstTime();
     }
 
@@ -147,11 +145,7 @@ public class HomeController implements Initializable{
     }
 
     private void setPrices() {
-        double usdPrice = 0;
-        double eurPrice = 0;
-        double tomanPrice = 0;
-        double yenPrice = 0;
-        double gbpPrice = 0;
+        double[] nowPrices = new double[allCoins.size()];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
         for (int i = 0; i < cryptoDataList.size() - 1; i++) {
@@ -160,51 +154,53 @@ public class HomeController implements Initializable{
             LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter);            
 
             if (currentTimeIsbetween(time1, time2)) {
-                usdPrice = getPriceOf(cryptoDataList.get(i), Coins.USD);
-                eurPrice = getPriceOf(cryptoDataList.get(i), Coins.EUR);
-                tomanPrice = getPriceOf(cryptoDataList.get(i), Coins.TOMAN);
-                yenPrice = getPriceOf(cryptoDataList.get(i), Coins.YEN);
-                gbpPrice = getPriceOf(cryptoDataList.get(i), Coins.GBP);
+                for (int j = 0; j < nowPrices.length; j++) {
+                    nowPrices[j] = getPriceOfCoin(cryptoDataList.get(i), Coins.getCoinOfIndex(j));
+                }
                 break;
             }
         }
 
-        USD.setPrice(usdPrice);
-        EUR.setPrice(eurPrice);
-        TOMAN.setPrice(tomanPrice);
-        YEN.setPrice(yenPrice);
-        GBP.setPrice(gbpPrice);
+        for (int i = 0; i < allCoins.size(); i++) {
+            allCoins.get(i).setPrice(nowPrices[i]);
+        }
     }
 
-    private double getPriceOf(CryptoData cryptoData, Coins coin) {
-        int index;
-        switch (coin.getCoinName()) {
-            case "USD":
-                index = 0;
-                break;
+    private double getPriceOfCoin(CryptoData cryptoData, Coins coin) {
+        return cryptoData.getPriceAt(coin.getIndex());
+    }
 
-            case "EUR":
-                index = 1;
-                break;
+    private void setMax_MInColumn(SetMax_MInColumn max_min) {
+        for (int i = 0; i < allCoins.size(); i++) {
+            if (max_min.equals(SetMax_MInColumn.MAX)) 
+                allCoins.get(i).setMaxPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
+            else
+                allCoins.get(i).setMinPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
+        }
+    }
 
-            case "TOMAN":
-                index = 2;
-                break;
+    private double getMax_MInPriceOfCoin(Coins coin, SetMax_MInColumn max_min) {
+        double maxPrice = Double.MIN_VALUE;
+        double minPrice = Double.MAX_VALUE;
 
-            case "YEN":
-                index = 3;
-                break;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
+        for (int i = 0; i < cryptoDataList.size() - 1; i++) {
+            
+            LocalTime time1 = LocalTime.parse(cryptoDataList.get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter); 
 
-            case "GBP":
-                index = 4;
-                break;
+            if (max_min.equals(SetMax_MInColumn.MAX)) 
+                maxPrice = Math.max(maxPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
+            else
+                minPrice = Math.min(minPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
 
-            default:
-                index = 0;
+            if (currentTimeIsbetween(time1, time2)) {
                 break;
+            }
         }
 
-        return cryptoData.getPriceAt(index);
+        if (max_min.equals(SetMax_MInColumn.MAX)) return maxPrice;
+        else return minPrice;
     }
 
     private void showTabel() {
@@ -349,7 +345,7 @@ enum SortBy {
 
     private String by;
 
-    SortBy(String description) {
+    SortBy(String by) {
         this.by = by;
     }
 
@@ -364,7 +360,7 @@ enum SortType {
 
     private String type;
 
-    SortType(String description) {
+    SortType(String type) {
         this.type = type;
     }
 
@@ -374,21 +370,55 @@ enum SortType {
 }
 
 enum Coins {
-    USD("UDS"),
-    EUR("EUR"),
-    TOMAN("TOMAN"),
-    YEN("YEN"),
-    GBP("GBP");
+    USD("UDS", 0),
+    EUR("EUR",  1),
+    TOMAN("TOMAN", 2),
+    YEN("YEN", 3),
+    GBP("GBP", 4);
 
     private String coinName;
+    private int index;
 
-    Coins(String coinName) {
+    Coins(String coinName, int index) {
         this.coinName = coinName;
+        this.index = index;
     }
 
     public String getCoinName() {
         return coinName;
     }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public static Coins getCoinOfIndex(int index) {
+        switch (index) {
+            case 0:
+                
+                return Coins.USD;
+            case 1:
+                
+                return Coins.EUR;
+            case 2:
+                
+                return Coins.TOMAN;
+            case 3:
+                
+                return Coins.YEN;
+            case 4:
+                
+                return Coins.GBP;
+        
+            default:
+                return null;
+        }
+    } 
+}
+
+enum SetMax_MInColumn {
+    MAX(),
+    MIN();
 }
 
 
