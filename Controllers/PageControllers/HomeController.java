@@ -15,6 +15,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 import java.util.Collections;
+import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import HomePagePackage.CryptoData;
 
 public class HomeController implements Initializable{
     @FXML
@@ -23,8 +31,8 @@ public class HomeController implements Initializable{
     @FXML
     private Label assetLabel;
 
-    private final int assetColumn = 0;
-    private final int imageColumn = 1;
+    private final int assetColumn = 1;
+    private final int imageColumn = 0;
     private final int priceColumn = 2;
     private final int changeColumn = 3;
     private final int maxPriceColumn = 4;
@@ -37,19 +45,15 @@ public class HomeController implements Initializable{
     private ArrayList<Label> maxPrices = new ArrayList<>();
     private ArrayList<Label> minPrices = new ArrayList<>();
 
-    private CoinsInfo BTC = new CoinsInfo("BTC", "../../Image/coinIcons/BTC.png");
-    private CoinsInfo DOGE = new CoinsInfo("DOGE", "../../Image/coinIcons/DOGE.png");
-    private CoinsInfo DASH = new CoinsInfo("DASH", "../../Image/coinIcons/DASH.png");
-    private CoinsInfo LTC = new CoinsInfo("LTC", "../../Image/coinIcons/LTC.png");
+    private CoinsInfo USD = new CoinsInfo("USD", "../../Image/coinIcons/USD.png");
+    private CoinsInfo EUR = new CoinsInfo("EUR", "../../Image/coinIcons/EUR.png");
+    private CoinsInfo TOMAN = new CoinsInfo("TOMAN", "../../Image/coinIcons/TOMAN.png");
+    private CoinsInfo YEN = new CoinsInfo("YEN", "../../Image/coinIcons/YEN.png");
+    private CoinsInfo GBP = new CoinsInfo("GBP", "../../Image/coinIcons/GBP.png");
 
     private ArrayList<CoinsInfo> allCoins = new ArrayList<>();
 
-    {
-        allCoins.add(BTC);
-        allCoins.add(DOGE);
-        allCoins.add(DASH);
-        allCoins.add(LTC);
-    }
+    List<CryptoData> cryptoDataList = new ArrayList<>();
 
 
     private void addRow(CoinsInfo coin) {
@@ -94,29 +98,113 @@ public class HomeController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        BTC.setChange("+1.31%");
-        DOGE.setChange("+2.22%");
-        DASH.setChange("+4.83%");
-        LTC.setChange("+3.27%");
+        importDataSet("C:\\Users\\ASUS\\Desktop\\TermTow\\FinalProject(TermTwo)\\src\\Files\\currency_prices.csv");
 
-        BTC.setPrice(246590736);
-        DOGE.setPrice(4525);
-        DASH.setPrice(1633184);
-        LTC.setPrice(3693200);
+        allCoins.add(USD);
+        allCoins.add(EUR);
+        allCoins.add(TOMAN);
+        allCoins.add(YEN);
+        allCoins.add(GBP);
 
-        BTC.setMaxPrice((246590736));
-        DOGE.setMaxPrice(4525);
-        DASH.setMaxPrice(1633184);
-        LTC.setMaxPrice(3693200);
+        setPrices();
+        showTabelForFirstTime();
+    }
 
-        BTC.setMinPrice(246590736);
-        DOGE.setMinPrice(4525);
-        DASH.setMinPrice(1633184);
-        LTC.setMinPrice(3693200);
+    private void importDataSet(String absoloutPath) {
+        try (CSVReader reader = new CSVReader(new FileReader(absoloutPath))) {
+            String[] nextLine;
+            boolean skipHeader = true;  // Assuming first line is header
+            while ((nextLine = reader.readNext()) != null) {
+                if (skipHeader) {
+                    skipHeader = false;
+                    continue;  // Skip the header line
+                }
 
-        for (int i = 0; i < allCoins.size(); i++) {
-            addRow(allCoins.get(i));
+                if (nextLine.length < 2) {
+                    continue;
+                }
+
+                String date = nextLine[0].trim();
+                String time = nextLine[1].trim();
+
+                List<Double> prices = new ArrayList<>();
+                for (int i = 2; i < nextLine.length; i++) {
+                    try {
+                        double price = Double.parseDouble(nextLine[i].trim());
+                        prices.add(price);
+                    } catch (NumberFormatException e) {
+                        // Handle the case where parsing fails (e.g., log an error)
+                        System.err.println("Error parsing price: " + nextLine[i]);
+                    }
+                }
+
+                CryptoData cryptoData = new CryptoData(date, time, prices);
+                cryptoDataList.add(cryptoData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void setPrices() {
+        double usdPrice = 0;
+        double eurPrice = 0;
+        double tomanPrice = 0;
+        double yenPrice = 0;
+        double gbpPrice = 0;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
+        for (int i = 0; i < cryptoDataList.size() - 1; i++) {
+            
+            LocalTime time1 = LocalTime.parse(cryptoDataList.get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter);            
+
+            if (currentTimeIsbetween(time1, time2)) {
+                usdPrice = getPriceOf(cryptoDataList.get(i), Coins.USD);
+                eurPrice = getPriceOf(cryptoDataList.get(i), Coins.EUR);
+                tomanPrice = getPriceOf(cryptoDataList.get(i), Coins.TOMAN);
+                yenPrice = getPriceOf(cryptoDataList.get(i), Coins.YEN);
+                gbpPrice = getPriceOf(cryptoDataList.get(i), Coins.GBP);
+                break;
+            }
+        }
+
+        USD.setPrice(usdPrice);
+        EUR.setPrice(eurPrice);
+        TOMAN.setPrice(tomanPrice);
+        YEN.setPrice(yenPrice);
+        GBP.setPrice(gbpPrice);
+    }
+
+    private double getPriceOf(CryptoData cryptoData, Coins coin) {
+        int index;
+        switch (coin.getCoinName()) {
+            case "USD":
+                index = 0;
+                break;
+
+            case "EUR":
+                index = 1;
+                break;
+
+            case "TOMAN":
+                index = 2;
+                break;
+
+            case "YEN":
+                index = 3;
+                break;
+
+            case "GBP":
+                index = 4;
+                break;
+
+            default:
+                index = 0;
+                break;
+        }
+
+        return cryptoData.getPriceAt(index);
     }
 
     private void showTabel() {
@@ -125,6 +213,13 @@ public class HomeController implements Initializable{
         }
     }
 
+    private void showTabelForFirstTime() {
+        for (int i = 0; i < allCoins.size(); i++) {
+            addRow(allCoins.get(i));
+        }
+    }
+
+    
     @FXML
     private void sortByPrice() {
         sortCoins(SortBy.PRICE, SortType.ASCENDING);
@@ -168,6 +263,27 @@ public class HomeController implements Initializable{
     @FXML 
     private void z_ASort() {
         sortCoins(SortBy.ALFABET, SortType.DESCENDING);
+    }
+
+
+    public boolean currentTimeIsbetween(LocalTime time1, LocalTime time2) {
+        LocalDateTime now = LocalDateTime.now();
+        int hourNow = now.getHour() + 1;
+        int minuteNow = now.getMinute();
+
+        int hour1 = time1.getHour();
+        int minute1 = time1.getMinute();
+
+        int hour2 = time2.getHour();
+        int minute2 = time2.getMinute();
+
+        if (hour1 <= hourNow && hour2 > hourNow && minute1 == minuteNow) return true;
+        else if (hour1 == hour2 && hour1 == hourNow) {
+            if (minute1 < minute2) {
+                if (minute1 <= minuteNow && minute2 > minuteNow) return true;
+                else return false;
+            } else return false;
+        } else return false;
     }
 
     private void sortCoins(SortBy sortBy, SortType sortType) {
@@ -252,8 +368,26 @@ enum SortType {
         this.type = type;
     }
 
-    public String getDescription() {
+    public String getType() {
         return type;
+    }
+}
+
+enum Coins {
+    USD("UDS"),
+    EUR("EUR"),
+    TOMAN("TOMAN"),
+    YEN("YEN"),
+    GBP("GBP");
+
+    private String coinName;
+
+    Coins(String coinName) {
+        this.coinName = coinName;
+    }
+
+    public String getCoinName() {
+        return coinName;
     }
 }
 
