@@ -105,6 +105,7 @@ public class HomeController implements Initializable{
         setPrices();
         setMax_MInColumn(SetMax_MInColumn.MAX);
         setMax_MInColumn(SetMax_MInColumn.MIN);
+        setMax_MInColumn(SetMax_MInColumn.CHANGE);
         showTabelForFirstTime();
     }
 
@@ -174,33 +175,47 @@ public class HomeController implements Initializable{
         for (int i = 0; i < allCoins.size(); i++) {
             if (max_min.equals(SetMax_MInColumn.MAX)) 
                 allCoins.get(i).setMaxPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
-            else
+            else if (max_min.equals(SetMax_MInColumn.MIN))
                 allCoins.get(i).setMinPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
+            else 
+                allCoins.get(i).setChangeNumber(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
         }
     }
 
     private double getMax_MInPriceOfCoin(Coins coin, SetMax_MInColumn max_min) {
         double maxPrice = Double.MIN_VALUE;
         double minPrice = Double.MAX_VALUE;
+        double change = 0;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
         for (int i = 0; i < cryptoDataList.size() - 1; i++) {
             
             LocalTime time1 = LocalTime.parse(cryptoDataList.get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter); 
+            LocalTime time2 = LocalTime.parse(cryptoDataList.get(i + 1).getTime(), formatter);
 
-            if (max_min.equals(SetMax_MInColumn.MAX)) 
+            if (max_min.equals(SetMax_MInColumn.MAX))
                 maxPrice = Math.max(maxPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
             else
                 minPrice = Math.min(minPrice, getPriceOfCoin(cryptoDataList.get(i), coin));
 
             if (currentTimeIsbetween(time1, time2)) {
+                double delta;
+                if (i == 0) {
+                    delta = getPriceOfCoin(cryptoDataList.get(i), coin) - getPriceOfCoin(cryptoDataList.get(cryptoDataList.size() - 1), coin);
+                    change = delta / getPriceOfCoin(cryptoDataList.get(cryptoDataList.size() - 1), coin);
+                } else {
+                    delta = getPriceOfCoin(cryptoDataList.get(i), coin) - getPriceOfCoin(cryptoDataList.get(i - 1), coin);
+                    change = delta / getPriceOfCoin(cryptoDataList.get(i - 1), coin);
+                }
+                
+                
                 break;
             }
         }
 
         if (max_min.equals(SetMax_MInColumn.MAX)) return maxPrice;
-        else return minPrice;
+        else if (max_min.equals(SetMax_MInColumn.MIN)) return minPrice;
+        else return Math.round(change * 100.0) / 100.0;
     }
 
     private void showTabel() {
@@ -355,37 +370,21 @@ enum SortBy {
 }
 
 enum SortType {
-    ASCENDING("Ascending"),
-    DESCENDING("Descending");
-
-    private String type;
-
-    SortType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
+    ASCENDING(),
+    DESCENDING();
 }
 
 enum Coins {
-    USD("UDS", 0),
-    EUR("EUR",  1),
-    TOMAN("TOMAN", 2),
-    YEN("YEN", 3),
-    GBP("GBP", 4);
+    USD(0),
+    EUR(1),
+    TOMAN(2),
+    YEN(3),
+    GBP(4);
 
-    private String coinName;
     private int index;
 
-    Coins(String coinName, int index) {
-        this.coinName = coinName;
+    Coins(int index) {
         this.index = index;
-    }
-
-    public String getCoinName() {
-        return coinName;
     }
 
     public int getIndex() {
@@ -418,7 +417,8 @@ enum Coins {
 
 enum SetMax_MInColumn {
     MAX(),
-    MIN();
+    MIN(),
+    CHANGE();
 }
 
 

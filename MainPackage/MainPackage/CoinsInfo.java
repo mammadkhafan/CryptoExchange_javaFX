@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public class CoinsInfo {
     private Image coinsImage;
     private String name, change;
-    private double price, maxPrice, minPrice;
+    private double price, changeNumber, maxPrice, minPrice;
 
     public CoinsInfo(String name, String imagePath) {
         setName(name);
@@ -45,11 +45,19 @@ public class CoinsInfo {
     }
 
     public String getChange() {
-        return this.change;
+        return "" + changeNumber + "%";
     }
 
-    public void setChange(String changel) {
-        this.change = changel;
+    public void setChange(String change) {
+        this.change = change;
+    }
+
+    public double getChangeNumber() {
+        return this.changeNumber;
+    }
+
+    public void setChangeNumber(double changeNumber) {
+        this.changeNumber = changeNumber;
     }
 
     public double getPrice() {
