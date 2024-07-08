@@ -3,8 +3,8 @@ package Controllers.SignInControllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import BookPackage.Book;
+import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.Main;
 import MainPackage.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
@@ -50,7 +50,6 @@ public class SignUpController extends SignInMethods implements Initializable{
 
     private int randomIndex;
 
-    public Book book;
     private User user;
 
     private String[] countryNumbers = 
@@ -103,7 +102,9 @@ public class SignUpController extends SignInMethods implements Initializable{
 
     @FXML
     private void checkUsername(KeyEvent event) {
-        check(usernameTextField, usernameMessage, Regex.usernameRegex, ErrorMessage.usernameErrorMessage);
+        if (!Main.book.IsDuplicateUserName(usernameTextField.getText())) {
+            check(usernameTextField, usernameMessage, Regex.usernameRegex, ErrorMessage.usernameErrorMessage);
+        } else toError(usernameMessage, ErrorMessage.usernameErrorMessage);
     }
 
     @FXML
@@ -170,8 +171,8 @@ public class SignUpController extends SignInMethods implements Initializable{
         Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaCodeMessage, profileImageName};
         if (isEveryThingOk(messages)) {
             user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
-            book.addUser(user);
-            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+            Main.book.addUser(user);
+            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/LoginPage.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);

@@ -1,27 +1,36 @@
 package Controllers.PageControllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
-
 import BookPackage.ExchangeType;
 import BookPackage.PendingExchange;
 import CoinPackage.CoinsNameAndIndex;
 import CoinPackage.CoinsOfCSV;
-import Controllers.SignInControllers.SignInMethods;
+import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.Main;
 
-public class ExchangeController extends SignInMethods implements Initializable {
+public class ExchangeController extends SignInMethods implements Initializable{
     @FXML
     private MenuButton pageMenuButton, choseYourCoinMenuButton;
+
+    @FXML
+    private MenuItem homeMenuItem;
 
     @FXML
     private RadioButton buyRadioButton, sellRadioButton;
@@ -31,13 +40,15 @@ public class ExchangeController extends SignInMethods implements Initializable {
     private TextField amountTextField, priceTextField;
 
     @FXML
-    private Label choseYourCoinMessageLabel, amountMessageLabel, priceMessageLabel, typeOfExchangeMessageLabel;
+    private Label choseYourCoinMessageLabel, amountMessageLabel, priceMessageLabel, typeOfExchangeMessageLabel,
+            dealsResultlabel, moreInfoAboutDealsResult, personWhoYouDealWithLabel;
 
     private CoinsOfCSV coinsOfCSV;
     private MenuItem[] menuItemsOfchoseYourCoin;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        coinsOfCSV = new CoinsOfCSV("C:\\Users\\ASUS\\Desktop\\TermTow\\FinalProject(TermTwo)\\src\\Files\\currency_prices.csv");
         try {
             menuItemsOfchoseYourCoin = new MenuItem[coinsOfCSV.getAllCoins().size()];
             for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {
@@ -100,27 +111,27 @@ public class ExchangeController extends SignInMethods implements Initializable {
     }
 
     @FXML
-    private void increaseAmount() {
+    private void increaseAmountValue() {
         int currentAmount = Integer.parseInt(amountTextField.getText());
         amountTextField.setText(String.valueOf(currentAmount + 1));
     }
 
     @FXML
-    private void decreaseAmount() {
+    private void decreaseAmountValue() {
         int currentAmount = Integer.parseInt(amountTextField.getText());
         if (currentAmount - 1 >= 0) 
             amountTextField.setText(String.valueOf(currentAmount - 1));
     }
 
     @FXML
-    private void increasePrice() {
+    private void increasePriceValue() {
         double currentPrice = Double.parseDouble(priceTextField.getText());
         String formattedPrice = String.format("%.1f", currentPrice + 0.1);
         priceTextField.setText(formattedPrice);
     }
 
     @FXML
-    private void decreasePrice() {
+    private void decreasePriceValue() {
         double currentPrice = Double.parseDouble(priceTextField.getText());
         String formattedPrice = "";
         if (currentPrice - 0.1 >= 0) { 
@@ -161,16 +172,31 @@ public class ExchangeController extends SignInMethods implements Initializable {
         } else toInvisible(typeOfExchangeMessageLabel);
          
         if (sw) {
-            PendingExchange newPendingExchange;
+            PendingExchange newExchange = null;
             if (buyRadioButton.isSelected()) {
-                newPendingExchange = new PendingExchange(null, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
+                newExchange = new PendingExchange(null, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
             } 
             else if (sellRadioButton.isSelected()) {
-                newPendingExchange = new PendingExchange(null, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
+                newExchange = new PendingExchange(null, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
             }
 
-
+            String dealsResult = Main.book.weldTheDeal(newExchange).getDealsResult();
+            dealsResultlabel.setText(dealsResult);
         }
+    }
+
+    @FXML
+    private void afterHomeMenuItem(ActionEvent event) throws IOException{
+        try {
+            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 }
 

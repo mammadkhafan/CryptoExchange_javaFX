@@ -18,7 +18,7 @@
    <children>
       <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
         <items>
-          <MenuItem mnemonicParsing="false" text="Home" />
+          <MenuItem fx:id="homeMenuItem" mnemonicParsing="false" onAction="#afterHomeMenuItem" text="Home" />
           <MenuItem disable="true" mnemonicParsing="false" text="Exchange" />
             <MenuItem mnemonicParsing="false" text="Swap" />
             <MenuItem mnemonicParsing="false" text="Token" />
@@ -59,17 +59,21 @@
       <MenuButton fx:id="choseYourCoinMenuButton" layoutX="126.0" layoutY="164.0" mnemonicParsing="false" text="Chose your coin" />
       <TextField fx:id="amountTextField" layoutX="126.0" layoutY="252.0" prefHeight="26.0" prefWidth="74.0" text="0" />
       <Label layoutX="126.0" layoutY="225.0" prefHeight="18.0" prefWidth="260.0" text="How many do you want to buy/sell ?" />
-      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="202.0" layoutY="263.0" onMouseClicked="#increaseAmount" />
-      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="202.0" layoutY="275.0" onMouseClicked="#decreaseAmount" />
+      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="202.0" layoutY="263.0" onMouseClicked="#increaseAmountValue" />
+      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="202.0" layoutY="275.0" onMouseClicked="#decreaseAmountValue" />
       <Label layoutX="126.0" layoutY="301.0" prefHeight="18.0" prefWidth="260.0" text="How much is one of coin ?" />
       <TextField fx:id="priceTextField" layoutX="126.0" layoutY="327.0" prefHeight="26.0" prefWidth="74.0" text="0.0" />
-      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="202.0" layoutY="338.0" onMouseClicked="#increasePrice" />
-      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="202.0" layoutY="350.0" onMouseClicked="#decreasePrice" text="" />
+      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="202.0" layoutY="338.0" onMouseClicked="#increasePriceValue" />
+      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="202.0" layoutY="350.0" onMouseClicked="#decreasePriceValue" text="" />
       <Button layoutX="126.0" layoutY="407.0" mnemonicParsing="false" onAction="#afterRequestRegistration" text="Request registration" />
       <Label fx:id="amountMessageLabel" layoutX="126.0" layoutY="278.0" prefHeight="18.0" prefWidth="426.0" />
       <Label fx:id="priceMessageLabel" layoutX="126.0" layoutY="353.0" prefHeight="18.0" prefWidth="426.0" />
       <Label fx:id="choseYourCoinMessageLabel" layoutX="126.0" layoutY="190.0" prefHeight="18.0" prefWidth="346.0" />
       <Label fx:id="typeOfExchangeMessageLabel" layoutX="126.0" layoutY="146.0" prefHeight="18.0" prefWidth="426.0" />
       <Line endX="184.39288330078125" layoutX="227.0" layoutY="217.0" opacity="0.31" startX="-100.0" />
+      <Line endX="184.39288330078125" layoutX="222.0" layoutY="450.0" opacity="0.31" startX="-100.0" />
+      <Label fx:id="dealsResultLabel" layoutX="126.0" layoutY="468.0" prefHeight="26.0" prefWidth="426.0" text="Deals result: " />
+      <Label fx:id="moreInfoAboutDealsResultLabel" layoutX="126.0" layoutY="494.0" prefHeight="26.0" prefWidth="426.0" />
+      <Label fx:id="personWhoYouDealWithLabel" layoutX="126.0" layoutY="520.0" prefHeight="26.0" prefWidth="426.0" />
    </children>
 </AnchorPane>

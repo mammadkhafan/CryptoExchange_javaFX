@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.mail.BodyPart;
-
-import BookPackage.Book;
+import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,8 +37,6 @@ public class LoginController extends SignInMethods implements Initializable{
     private ImageView captchaImageView;
 
     private int randomIndex;
-    private Book book;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,7 +62,7 @@ public class LoginController extends SignInMethods implements Initializable{
     public void afterLogin(ActionEvent event) throws IOException{
         Label[] messages = {usernameMessage, passwordMessage, captchaCodeMessage};
         if (isEveryThingOk(messages)) {
-            if (book.findUser(usernameTextField.getText(), passwordPasswordField.getText())) {
+            if (Main.book.findUserWithUsernameAndPassword(usernameTextField.getText(), passwordPasswordField.getText())) {
                 root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 scene = new Scene(root);

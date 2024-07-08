@@ -1,6 +1,8 @@
 package MainPackage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import BookPackage.Book;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -8,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 public class Main extends Application {
+    public static Book book = new Book(new ArrayList<User>());
     public static void main(String[] args) {
         launch(args);
     }

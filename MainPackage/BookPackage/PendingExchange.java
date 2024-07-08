@@ -48,6 +48,10 @@ public class PendingExchange {
         
     }
 
+    public void decreaseAmountofCoins(int amount) {
+        amountOfCoin -= amount;
+    }
+
     public User getUser() {
         return this.user;
     }

@@ -5,12 +5,14 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import java.time.LocalDateTime;
 public class ForgetPasswordController extends SignInMethods{
     @FXML
     private Label 
@@ -41,16 +44,23 @@ public class ForgetPasswordController extends SignInMethods{
     private FontAwesomeIcon backIcon;
 
     private String code;
-    private boolean isSend = false;
-
+    private int lastSecondEmailSent = -1;
+    private boolean codeEntered = false;
 
     @FXML
     public void checkEmail() {
         String email = emailTextField.getText();
-        // email = "msharifrazavianm@gmail.com";
-        if (!email.isEmpty()) {
+        int nowSecond = LocalDateTime.now().getSecond();
+        if ((nowSecond >= lastSecondEmailSent && nowSecond < 60) || (nowSecond < lastSecondEmailSent)) {
+            toError(emailMessage, ErrorMessage.emailSentInLastMinuteErrorMessage);
+        }
+        else if (Main.book.findUserWithEmail(email)) {
+            toInvisible(emailMessage);
             code = generateRandomCode();
             sendForgotPasswordEmail(email, code);
+        }
+        else {
+            toError(emailMessage, ErrorMessage.emailNotFoundErrorMessage);
         }
     }
 
@@ -66,9 +76,9 @@ public class ForgetPasswordController extends SignInMethods{
 
     @FXML
     public void checkRepeatPassword() {
-        if (newPasswordPasswordField.getText().equals(repeatPasswordPasswordField.getText())) {
+        if (newPasswordPasswordField.getText().equals(repeatPasswordPasswordField.getText()) && !newPasswordPasswordField.getText().isEmpty()) {
             toCorrect(repeatPasswordMessage);
-        } else {
+        } else if (!repeatPasswordPasswordField.getText().isEmpty()){
             Color red = Color.web("#FF6347");
             repeatPasswordMessage.setTextFill(red);
 
@@ -77,15 +87,28 @@ public class ForgetPasswordController extends SignInMethods{
     }
 
     @FXML
+    private void checkCodeEnteredBeforSetNewPassword() {
+        if (!codeEntered) {
+            toError(codeMessage, ErrorMessage.interCodeBeforeSetPassword);
+            newPasswordPasswordField.setEditable(false);
+            repeatPasswordPasswordField.setEditable(false);
+        } else {
+            newPasswordPasswordField.setEditable(true);
+            repeatPasswordPasswordField.setEditable(true);
+        }
+    }
+
+    @FXML
     public void afterSubmit() {
         String inputCode = codePasswordField.getText();
         if (inputCode.equals(code)) {
             toCorrect(codeMessage);
+            codeEntered = true;
         } else {
             Color red = Color.web("#FF6347");
             codeMessage.setTextFill(red);
-
             codeMessage.setText("Not correct verificatoin code");
+            codeEntered = false;
         }
     }
 
@@ -107,7 +130,7 @@ public class ForgetPasswordController extends SignInMethods{
 
     @FXML
     public void afterBack(MouseEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/loginPage.fxml"));
+        root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/LoginPage.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

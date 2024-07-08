@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import MainPackage.User;
 
 public class Book {
-    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<User> users;
     private ArrayList<PendingExchange> pendingExchanges = new ArrayList<>();
     private ArrayList<ComplitedExchange> complitedExchanges = new ArrayList<>();
+
+    public Book(ArrayList<User> users) {
+        this.users = users;
+    }
 
     public DealsRespond weldTheDeal(PendingExchange incomingPendingExchange) {
         for (int i = 0; i < pendingExchanges.size(); i++) {
@@ -17,6 +21,7 @@ public class Book {
                     if (incomingPendingExchange.getAmountOfCoin() > pendingExchanges.get(i).getAmountOfCoin()) {
                         incomingPendingExchange.getUser().increseCoinWelthAt(incomingPendingExchange.getCoinsIndex(), pendingExchanges.get(i).getAmountOfCoin());
                         incomingPendingExchange.getUser().decreaseMoneyWelth(pendingExchanges.get(i).getPriceOfEachCoin() * pendingExchanges.get(i).getAmountOfCoin());
+                        incomingPendingExchange.decreaseAmountofCoins(pendingExchanges.get(i).getAmountOfCoin());
                         pendingExchanges.add(incomingPendingExchange);
 
                         pendingExchanges.get(i).getUser().decreaseCoinWelthAt(incomingPendingExchange.getCoinsIndex(), pendingExchanges.get(i).getAmountOfCoin());
@@ -53,6 +58,7 @@ public class Book {
                     if (incomingPendingExchange.getAmountOfCoin() > pendingExchanges.get(i).getAmountOfCoin()) {
                         incomingPendingExchange.getUser().decreaseCoinWelthAt(incomingPendingExchange.getCoinsIndex(), pendingExchanges.get(i).getAmountOfCoin());
                         incomingPendingExchange.getUser().increaseMoneyWelth(pendingExchanges.get(i).getPriceOfEachCoin() * pendingExchanges.get(i).getAmountOfCoin());
+                        incomingPendingExchange.decreaseAmountofCoins(pendingExchanges.get(i).getAmountOfCoin());
                         pendingExchanges.add(incomingPendingExchange);
 
                         pendingExchanges.get(i).getUser().increseCoinWelthAt(incomingPendingExchange.getCoinsIndex(), pendingExchanges.get(i).getAmountOfCoin());
@@ -113,7 +119,7 @@ public class Book {
         users.remove(user);
     }
 
-    public boolean findUser(String username, String password) {
+    public boolean findUserWithUsernameAndPassword(String username, String password) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(username)) {
                 if (users.get(i).getPassword().equals(password)) {
@@ -123,5 +129,32 @@ public class Book {
             }
         }
         return false;
+    }
+
+    public boolean IsDuplicateUserName(String username) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findUserWithEmail(String email) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public User getUserWithEmail(String email) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getEmail().equals(email)) {
+                return users.get(i);
+            }
+        }
+        return null;
     }
 }

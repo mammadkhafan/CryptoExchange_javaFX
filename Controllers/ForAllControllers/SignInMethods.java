@@ -1,4 +1,4 @@
-package Controllers.SignInControllers;
+package Controllers.ForAllControllers;
 
 
 import javafx.scene.Parent;
@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class SignInMethods {
+public class SignInMethods implements LabelFlexible{
     protected Stage stage;
     protected Scene scene;
     protected Parent root;
@@ -76,7 +76,9 @@ public class SignInMethods {
         nameErrorMessage("valid chars: a-Z space"),
         phoneNumberErrorMessage("valid chars: 0-9 (length: min 4-max 10)"),
         captchaErrorMessage("your Input doesn't mach"),
-
+        emailNotFoundErrorMessage("Email not found in our users emails"),
+        emailSentInLastMinuteErrorMessage("you have to wait one minute"),
+        interCodeBeforeSetPassword("inter your generated code befor set new password"),
         amountEmptyErrorMessage("you didn't set the amount (most be more than 0)"),
         priceEmptyErrorMessage("you didn't set the price (most be more than 0.0)"),
         choseYourCoinEmptyErrorMessage("chose that coin you want to exchange with"),
@@ -96,7 +98,7 @@ public class SignInMethods {
     public void check(TextField textField, Label label, Regex reg, ErrorMessage errMsg) {
         String input = textField.getText();
         String regex = reg.regexStr;
-        if(!isValid(input, regex)){
+        if(!isValid(input, regex) && !label.getText().isEmpty()){
             toError(label, errMsg);
         } else if (isValid(input, regex)) {
             toCorrect(label);
@@ -140,22 +142,9 @@ public class SignInMethods {
             }
         }
     }
-    //-------------------------------------------------
+
+    //------------------------------
     protected Color green = Color.web("#03A313");
     protected Color red = Color.web("#FF6347");
     protected Color orang = Color.web("#FFA515");
-    public void toError(Label label, ErrorMessage errMsg) {
-        label.setTextFill(orang);
-        label.setText(errMsg.errorMessage);
-    }
-
-    public void toCorrect(Label label) {
-        label.setTextFill(green);
-        label.setText("valid Input");
-    }
-
-    public void toInvisible(Label label) {
-        label.setTextFill(Color.BLACK);
-        label.setText("");
-    }
 }
