@@ -1,5 +1,6 @@
 package MainPackage;
 
+import CoinPackage.CoinsNameAndIndex;
 import javafx.scene.image.Image;
 
 public class CoinsInfo {

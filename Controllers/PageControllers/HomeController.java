@@ -12,14 +12,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 import java.util.Collections;
-import com.opencsv.CSVReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
+import CoinPackage.*;
 import java.time.LocalTime;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import HomePagePackage.RowOfCsvFile;
 
 public class HomeController implements Initializable{
     @FXML
@@ -45,16 +40,7 @@ public class HomeController implements Initializable{
     private ArrayList<Label> maxPrices = new ArrayList<>();
     private ArrayList<Label> minPrices = new ArrayList<>();
 
-    private CoinsInfo USD = new CoinsInfo("USD", "../../Image/coinIcons/USD.png");
-    private CoinsInfo EUR = new CoinsInfo("EUR", "../../Image/coinIcons/EUR.png");
-    private CoinsInfo TOMAN = new CoinsInfo("TOMAN", "../../Image/coinIcons/TOMAN.png");
-    private CoinsInfo YEN = new CoinsInfo("YEN", "../../Image/coinIcons/YEN.png");
-    private CoinsInfo GBP = new CoinsInfo("GBP", "../../Image/coinIcons/GBP.png");
-
-    private ArrayList<CoinsInfo> allCoins = new ArrayList<>();
-
-    List<RowOfCsvFile> RowOfCsvFileList = new ArrayList<>();
-
+    CoinsOfCSV coinsOfCSV = new CoinsOfCSV("C:\\Users\\ASUS\\Desktop\\TermTow\\FinalProject(TermTwo)\\src\\Files\\currency_prices.csv");
 
     private void addRow(CoinsInfo coin) {
         gridPane.getRowConstraints().add(new RowConstraints());
@@ -98,139 +84,55 @@ public class HomeController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        importDataSet("C:\\Users\\ASUS\\Desktop\\TermTow\\FinalProject(TermTwo)\\src\\Files\\currency_prices.csv");
-
-        allCoins.add(USD);
-        allCoins.add(EUR);
-        allCoins.add(TOMAN);
-        allCoins.add(YEN);
-        allCoins.add(GBP);
-
         setPrices();
-        setMax_MInColumn(SetMax_MInColumn.MAX);
-        setMax_MInColumn(SetMax_MInColumn.MIN);
-        setMax_MInColumn(SetMax_MInColumn.CHANGE);
+        SetMax_MinColumn(SetMax_MinColumn.MAX);
+        SetMax_MinColumn(SetMax_MinColumn.MIN);
+        SetMax_MinColumn(SetMax_MinColumn.CHANGE);
         showTabelForFirstTime();
     }
 
-    private void importDataSet(String absoloutPath) {
-        try (CSVReader reader = new CSVReader(new FileReader(absoloutPath))) {
-            String[] nextLine;
-            boolean skipHeader = true;  // Assuming first line is header
-            while ((nextLine = reader.readNext()) != null) {
-                if (skipHeader) {
-                    skipHeader = false;
-                    continue;  // Skip the header line
-                }
-
-                if (nextLine.length < 2) {
-                    continue;
-                }
-
-                String date = nextLine[0].trim();
-                String time = nextLine[1].trim();
-
-                List<Double> prices = new ArrayList<>();
-                for (int i = 2; i < nextLine.length; i++) {
-                    try {
-                        double price = Double.parseDouble(nextLine[i].trim());
-                        prices.add(price);
-                    } catch (NumberFormatException e) {
-                        // Handle the case where parsing fails (e.g., log an error)
-                        System.err.println("Error parsing price: " + nextLine[i]);
-                    }
-                }
-
-                RowOfCsvFile RowOfCsvFile = new RowOfCsvFile(date, time, prices);
-                RowOfCsvFileList.add(RowOfCsvFile);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setPrices() {
-        double[] nowPrices = new double[allCoins.size()];
+        double[] nowPrices = new double[coinsOfCSV.getAllCoins().size()];
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
-        for (int i = 0; i < RowOfCsvFileList.size() - 1; i++) {
+        for (int i = 0; i < coinsOfCSV.getRowOfCsvFileList().size() - 1; i++) {
             
-            LocalTime time1 = LocalTime.parse(RowOfCsvFileList.get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(RowOfCsvFileList.get(i + 1).getTime(), formatter);            
+            LocalTime time1 = LocalTime.parse(coinsOfCSV.getRowOfCsvFileList().get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(coinsOfCSV.getRowOfCsvFileList().get(i + 1).getTime(), formatter);            
 
-            if (currentTimeIsbetween(time1, time2)) {
+            if (CoinsOfCSV.IscurrentTimebetween(time1, time2)) {
                 for (int j = 0; j < nowPrices.length; j++) {
-                    nowPrices[j] = getPriceOfCoin(RowOfCsvFileList.get(i), Coins.getCoinOfIndex(j));
+                    nowPrices[j] = coinsOfCSV.getPriceOfCoin(coinsOfCSV.getRowOfCsvFileList().get(i), CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(j));
                 }
                 break;
             }
         }
 
-        for (int i = 0; i < allCoins.size(); i++) {
-            allCoins.get(i).setPrice(nowPrices[i]);
+        for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {
+            coinsOfCSV.getAllCoins().get(i).setPrice(nowPrices[i]);
         }
     }
 
-    private double getPriceOfCoin(RowOfCsvFile RowOfCsvFile, Coins coin) {
-        return RowOfCsvFile.getPriceAt(coin.getIndex());
-    }
-
-    private void setMax_MInColumn(SetMax_MInColumn max_min) {
-        for (int i = 0; i < allCoins.size(); i++) {
-            if (max_min.equals(SetMax_MInColumn.MAX)) 
-                allCoins.get(i).setMaxPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
-            else if (max_min.equals(SetMax_MInColumn.MIN))
-                allCoins.get(i).setMinPrice(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
+    private void SetMax_MinColumn(SetMax_MinColumn max_min) {
+        for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {
+            if (max_min.equals(SetMax_MinColumn.MAX)) 
+                coinsOfCSV.getAllCoins().get(i).setMaxPrice(coinsOfCSV.getMax_MInPriceOfCoin(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(i), max_min));
+            else if (max_min.equals(SetMax_MinColumn.MIN))
+                coinsOfCSV.getAllCoins().get(i).setMinPrice(coinsOfCSV.getMax_MInPriceOfCoin(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(i), max_min));
             else 
-                allCoins.get(i).setChangeNumber(getMax_MInPriceOfCoin(Coins.getCoinOfIndex(i), max_min));
+                coinsOfCSV.getAllCoins().get(i).setChangeNumber(coinsOfCSV.getMax_MInPriceOfCoin(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(i), max_min));
         }
-    }
-
-    private double getMax_MInPriceOfCoin(Coins coin, SetMax_MInColumn max_min) {
-        double maxPrice = Double.MIN_VALUE;
-        double minPrice = Double.MAX_VALUE;
-        double change = 0;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
-        for (int i = 0; i < RowOfCsvFileList.size() - 1; i++) {
-            
-            LocalTime time1 = LocalTime.parse(RowOfCsvFileList.get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(RowOfCsvFileList.get(i + 1).getTime(), formatter);
-
-            if (max_min.equals(SetMax_MInColumn.MAX))
-                maxPrice = Math.max(maxPrice, getPriceOfCoin(RowOfCsvFileList.get(i), coin));
-            else
-                minPrice = Math.min(minPrice, getPriceOfCoin(RowOfCsvFileList.get(i), coin));
-
-            if (currentTimeIsbetween(time1, time2)) {
-                double delta;
-                if (i == 0) {
-                    delta = getPriceOfCoin(RowOfCsvFileList.get(i), coin) - getPriceOfCoin(RowOfCsvFileList.get(RowOfCsvFileList.size() - 1), coin);
-                    change = delta / getPriceOfCoin(RowOfCsvFileList.get(RowOfCsvFileList.size() - 1), coin);
-                } else {
-                    delta = getPriceOfCoin(RowOfCsvFileList.get(i), coin) - getPriceOfCoin(RowOfCsvFileList.get(i - 1), coin);
-                    change = delta / getPriceOfCoin(RowOfCsvFileList.get(i - 1), coin);
-                }
-                
-                
-                break;
-            }
-        }
-
-        if (max_min.equals(SetMax_MInColumn.MAX)) return maxPrice;
-        else if (max_min.equals(SetMax_MInColumn.MIN)) return minPrice;
-        else return Math.round(change * 100.0) / 100.0;
     }
 
     private void showTabel() {
-        for (int i = 0; i < allCoins.size(); i++) {
-            setRow(allCoins.get(i), i + 1);
+        for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {
+            setRow(coinsOfCSV.getAllCoins().get(i), i + 1);
         }
     }
 
     private void showTabelForFirstTime() {
-        for (int i = 0; i < allCoins.size(); i++) {
-            addRow(allCoins.get(i));
+        for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {
+            addRow(coinsOfCSV.getAllCoins().get(i));
         }
     }
 
@@ -280,62 +182,41 @@ public class HomeController implements Initializable{
         sortCoins(SortBy.ALFABET, SortType.DESCENDING);
     }
 
-
-    public boolean currentTimeIsbetween(LocalTime time1, LocalTime time2) {
-        LocalDateTime now = LocalDateTime.now();
-        int hourNow = now.getHour() + 1;
-        int minuteNow = now.getMinute();
-
-        int hour1 = time1.getHour();
-        int minute1 = time1.getMinute();
-
-        int hour2 = time2.getHour();
-        int minute2 = time2.getMinute();
-
-        if (hour1 <= hourNow && hour2 > hourNow && minute1 == minuteNow) return true;
-        else if (hour1 == hour2 && hour1 == hourNow) {
-            if (minute1 < minute2) {
-                if (minute1 <= minuteNow && minute2 > minuteNow) return true;
-                else return false;
-            } else return false;
-        } else return false;
-    }
-
     private void sortCoins(SortBy sortBy, SortType sortType) {
         switch (sortBy) {
             case ALFABET:
                 if (sortType == SortType.ASCENDING) {
-                    Collections.sort(allCoins, (c1, c2) -> c1.getName().compareTo(c2.getName()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> c1.getName().compareTo(c2.getName()));
                 } else {
-                    Collections.sort(allCoins, (c1, c2) -> c2.getName().compareTo(c1.getName()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> c2.getName().compareTo(c1.getName()));
                 }
                 break;
             case PRICE:
                 if (sortType == SortType.DESCENDING) {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getPrice(), c2.getPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c1.getPrice(), c2.getPrice()));
                 } else {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getPrice(), c1.getPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c2.getPrice(), c1.getPrice()));
                 }
                 break;
             case CHANGE:
                 if (sortType == SortType.DESCENDING) {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c1.getChange())), Double.parseDouble(ExtractNumber(c2.getChange()))));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c1.getChange())), Double.parseDouble(ExtractNumber(c2.getChange()))));
                 } else {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c2.getChange())), Double.parseDouble(ExtractNumber(c1.getChange()))));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(Double.parseDouble(ExtractNumber(c2.getChange())), Double.parseDouble(ExtractNumber(c1.getChange()))));
                 }
                 break;
             case MAXPRICE:
                 if (sortType == SortType.DESCENDING) {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getMaxPrice(), c2.getMaxPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c1.getMaxPrice(), c2.getMaxPrice()));
                 } else {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getMaxPrice(), c1.getMaxPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c2.getMaxPrice(), c1.getMaxPrice()));
                 }
                 break;
             case MINPRICE:
                 if (sortType == SortType.DESCENDING) {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c1.getMinPrice(), c2.getMinPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c1.getMinPrice(), c2.getMinPrice()));
                 } else {
-                    Collections.sort(allCoins, (c1, c2) -> Double.compare(c2.getMinPrice(), c1.getMinPrice()));
+                    Collections.sort(coinsOfCSV.getAllCoins(), (c1, c2) -> Double.compare(c2.getMinPrice(), c1.getMinPrice()));
                 }
         }
     
@@ -356,8 +237,6 @@ public class HomeController implements Initializable{
     private void openPagesMenuButton() {
         pageMenuButton.show();
     }
-
-
 }
 
 enum SortBy {
@@ -381,53 +260,6 @@ enum SortBy {
 enum SortType {
     ASCENDING(),
     DESCENDING();
-}
-
-enum Coins {
-    USD(0),
-    EUR(1),
-    TOMAN(2),
-    YEN(3),
-    GBP(4);
-
-    private int index;
-
-    Coins(int index) {
-        this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public static Coins getCoinOfIndex(int index) {
-        switch (index) {
-            case 0:
-                
-                return Coins.USD;
-            case 1:
-                
-                return Coins.EUR;
-            case 2:
-                
-                return Coins.TOMAN;
-            case 3:
-                
-                return Coins.YEN;
-            case 4:
-                
-                return Coins.GBP;
-        
-            default:
-                return null;
-        }
-    } 
-}
-
-enum SetMax_MInColumn {
-    MAX(),
-    MIN(),
-    CHANGE();
 }
 
 

@@ -75,7 +75,12 @@ public class SignInMethods {
         passwordErrorMessage("valid chars: a-Z 0-9 (length: min 6-max 15)"),
         nameErrorMessage("valid chars: a-Z space"),
         phoneNumberErrorMessage("valid chars: 0-9 (length: min 4-max 10)"),
-        captchaErrorMessage("your Input doesn't mach");
+        captchaErrorMessage("your Input doesn't mach"),
+
+        amountEmptyErrorMessage("you didn't set the amount (most be more than 0)"),
+        priceEmptyErrorMessage("you didn't set the price (most be more than 0.0)"),
+        choseYourCoinEmptyErrorMessage("chose that coin you want to exchange with"),
+        typeOfExchangeDoesNotSelectedErrorMessage("you have to select your exchange type");
 
         public String errorMessage;
 
@@ -141,13 +146,16 @@ public class SignInMethods {
     protected Color orang = Color.web("#FFA515");
     public void toError(Label label, ErrorMessage errMsg) {
         label.setTextFill(orang);
-
         label.setText(errMsg.errorMessage);
     }
 
     public void toCorrect(Label label) {
         label.setTextFill(green);
-
         label.setText("valid Input");
+    }
+
+    public void toInvisible(Label label) {
+        label.setTextFill(Color.BLACK);
+        label.setText("");
     }
 }

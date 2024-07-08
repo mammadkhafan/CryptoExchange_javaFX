@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.mail.BodyPart;
+
+import BookPackage.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,7 +29,7 @@ public class LoginController extends SignInMethods implements Initializable{
     private PasswordField  passwordPasswordField, captchaCodePasswordField;
 
     @FXML
-    private Label   usernameMessage, passwordMessage, captchaCodeMessage;
+    private Label   usernameMessage, passwordMessage, captchaCodeMessage, loginMessageLabel;
 
     @FXML
     private TextField usernameTextField; 
@@ -36,6 +38,7 @@ public class LoginController extends SignInMethods implements Initializable{
     private ImageView captchaImageView;
 
     private int randomIndex;
+    private Book book;
 
 
     @Override
@@ -62,11 +65,15 @@ public class LoginController extends SignInMethods implements Initializable{
     public void afterLogin(ActionEvent event) throws IOException{
         Label[] messages = {usernameMessage, passwordMessage, captchaCodeMessage};
         if (isEveryThingOk(messages)) {
-            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            if (book.findUser(usernameTextField.getText(), passwordPasswordField.getText())) {
+                root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } else {
+                loginMessageLabel.setText("Account didn't found");
+            }
         }
     }
 

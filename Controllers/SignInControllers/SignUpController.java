@@ -3,12 +3,14 @@ package Controllers.SignInControllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import BookPackage.Book;
+import MainPackage.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -47,6 +49,9 @@ public class SignUpController extends SignInMethods implements Initializable{
     private ComboBox<String> countryNumbersComboBox;
 
     private int randomIndex;
+
+    public Book book;
+    private User user;
 
     private String[] countryNumbers = 
     {"Brazil +55", 
@@ -164,6 +169,8 @@ public class SignUpController extends SignInMethods implements Initializable{
     private void afterCreateMyAccount(ActionEvent event) throws IOException {
         Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaCodeMessage, profileImageName};
         if (isEveryThingOk(messages)) {
+            user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
+            book.addUser(user);
             root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
