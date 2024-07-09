@@ -172,7 +172,7 @@ public class SignUpController extends SignInMethods implements Initializable{
     private void afterCreateMyAccount(ActionEvent event) throws IOException {
         Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaCodeMessage, profileImageName};
         if (isEveryThingOk(messages)) {
-            user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), countryNumbersComboBox.getValue() + phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
+            user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), countryNumbersComboBox.getValue() , phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
             Main.book.addUser(user);
             changeScene(event, "../../FXMLFiles/LoginPage.fxml", usernameTextField.getText());
         }

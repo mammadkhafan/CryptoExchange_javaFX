@@ -76,7 +76,7 @@ public class SignInMethods implements LabelFlexible{
         stage.show();
     }
 
-    public boolean isValid(String input, String regex){
+    public static boolean isValid(String input, String regex){
         return input.matches(regex);
     }
 

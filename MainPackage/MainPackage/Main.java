@@ -18,7 +18,7 @@ public class Main extends Application {
     private static Stage primaryStage;
     public static void main(String[] args) {
         //HARD CODE
-        User user = new User("mohammad mahdi", "sharif razavian", "mammad", "sharifrazavianm@gmail.com", "+989028021906", "13045949", null);
+        User user = new User("mohammad mahdi", "sharif razavian", "mammad", "sharifrazavianm@gmail.com", "Iran +98","9028021906", "13045949", null);
         book.addUser(user);
         user.increseCoinWelthAt(CoinsNameAndIndex.USD.getIndex(), 5);
         book.addToPendingExchanges(new PendingExchange(user, ExchangeType.BUY, CoinsNameAndIndex.USD, 15, 1.05));

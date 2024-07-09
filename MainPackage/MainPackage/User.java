@@ -10,6 +10,8 @@ public class User {
     private String username;
     private String email;
     private String phoneNumber;
+    private String countryStartingNumber;
+    private String phoneNumberWithoutCountry;
     private String password;
     private ImageView profileImage;
     private String walletId;
@@ -21,12 +23,14 @@ public class User {
     private final int walletIdLength = 7;
 
 
-    public User(String firsName, String lastName, String username, String email, String phoneNumber, String password, ImageView profileImage) {
+    public User(String firsName, String lastName, String username, String email,String countryStartingNumber, String phoneNumberWithoutCountry, String password, ImageView profileImage) {
         this.firstName = firsName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumberWithoutCountry = phoneNumberWithoutCountry;
+        this.countryStartingNumber = countryStartingNumber;
+        this.phoneNumber = countryStartingNumber + phoneNumberWithoutCountry;
         this.password = password;
         this.profileImage = profileImage;
 
@@ -110,6 +114,49 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public String getCountryStartingNumber() {
+        return this.countryStartingNumber;
+    }
+
+    public void setCountryStartingNumber(String countryStartingNumber) {
+        this.countryStartingNumber = countryStartingNumber;
+    }
+
+    public String getPhoneNumberWithoutCountry() {
+        return this.phoneNumberWithoutCountry;
+    }
+
+    public void setPhoneNumberWithoutCountry(String phoneNumberWithoutCountry) {
+        this.phoneNumberWithoutCountry = phoneNumberWithoutCountry;
+    }
+
+    public void setWalletId(String walletId) {
+        this.walletId = walletId;
+    }
+    
+    public void setMoneyWelth(double moneyWelth) {
+        this.moneyWelth = moneyWelth;
+    }
+
+    public int[] getCoinWelth() {
+        return this.coinWelth;
+    }
+
+    public void setCoinWelth(int[] coinWelth) {
+        this.coinWelth = coinWelth;
+    }
+
+    public String getValidCharsInWalletId() {
+        return this.validCharsInWalletId;
+    }
+
+
+    public int getWalletIdLength() {
+        return this.walletIdLength;
+    }
+
+
 
     public String getPassword() {
         return this.password;

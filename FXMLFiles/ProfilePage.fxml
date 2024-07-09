@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.ProfileController">
+   <children>
+      <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
+            <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
+            <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
+         </items>
+      </MenuButton>
+      <Label alignment="CENTER" layoutX="315.0" layoutY="-6.0" prefHeight="62.0" prefWidth="298.0" style="-fx-text-fill: GREEN;" text="PROFILE PAGE">
+         <font>
+            <Font size="42.0" />
+         </font>
+      </Label>
+      <Line endX="829.0000610351562" layoutX="100.0" layoutY="53.0" startX="-100.0" />
+      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="41.0" onMouseClicked="#openPagesMenuButton" size="3em" wrappingWidth="31.20013427734375" />
+      <ImageView fitHeight="53.0" fitWidth="129.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/CompanyLogo.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="firstName" layoutX="157.0" layoutY="89.0" onAction="#editFirstName" prefHeight="26.0" prefWidth="167.0" />
+      <TextField fx:id="lastName" layoutX="157.0" layoutY="148.0" onAction="#editLastName" prefHeight="26.0" prefWidth="167.0" />
+      <TextField fx:id="username" editable="false" layoutX="157.0" layoutY="211.0" prefHeight="26.0" prefWidth="167.0" />
+      <TextField fx:id="password" layoutX="157.0" layoutY="274.0" onAction="#editPassword" prefHeight="26.0" prefWidth="167.0" />
+      <TextField fx:id="walletId" editable="false" layoutX="613.0" layoutY="89.0" prefHeight="26.0" prefWidth="167.0" />
+      <TextField fx:id="phoneNumber" layoutX="706.0" layoutY="146.0" onAction="#editPhoneNumber" prefHeight="28.0" prefWidth="99.0" />
+      <Label layoutX="157.0" layoutY="70.0" prefHeight="18.0" prefWidth="80.0" text="first name" />
+      <Label layoutX="157.0" layoutY="129.0" prefHeight="18.0" prefWidth="80.0" text="last name" />
+      <Label layoutX="157.0" layoutY="192.0" prefHeight="18.0" prefWidth="80.0" text="username" />
+      <Label layoutX="157.0" layoutY="255.0" prefHeight="18.0" prefWidth="80.0" text="password" />
+      <Label layoutX="613.0" layoutY="70.0" prefHeight="18.0" prefWidth="80.0" text="wallet id" />
+      <Label layoutX="613.0" layoutY="129.0" prefHeight="18.0" prefWidth="80.0" text="phone number" />
+      <ImageView fx:id="profileImage" fitHeight="150.0" fitWidth="150.0" layoutX="613.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Pictures/rightSideOfSignUp.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="613.0" layoutY="192.0" prefHeight="18.0" prefWidth="80.0" text="profile image" />
+      <Line endX="394.800048828125" layoutX="465.0" layoutY="401.0" opacity="0.63" startX="-395.6000061035156" strokeWidth="3.0" />
+      <TextField fx:id="email" layoutX="157.0" layoutY="336.0" onAction="#editEmail" prefHeight="26.0" prefWidth="167.0" />
+      <Label layoutX="157.0" layoutY="317.0" prefHeight="18.0" prefWidth="80.0" text="email" />
+      <FontAwesomeIcon glyphName="EDIT" layoutX="693.0" layoutY="209.0" onMouseClicked="#editProfileImage" size="2em" wrappingWidth="23.2000732421875" />
+      <Label layoutX="67.0" layoutY="500.0" prefHeight="18.0" prefWidth="793.0" text="You can't change username and wallet id" textFill="#c13131">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="67.0" layoutY="448.0" prefHeight="18.0" prefWidth="793.0" text="If you want change one of your informations in text field, press Enter to save the changes" textFill="#23b44c">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="countryNumbersComboBox" layoutX="613.0" layoutY="147.0" prefHeight="26.0" prefWidth="93.0" />
+      <AnchorPane layoutX="781.0" layoutY="60.0" onMouseMoved="#initializeWithMouseMove" prefHeight="200.0" prefWidth="150.0" />
+      <Label fx:id="firstNameMessageLabel" layoutX="324.0" layoutY="93.0" prefHeight="18.0" prefWidth="167.0" />
+      <Label fx:id="lastNameMessageLabel" layoutX="324.0" layoutY="151.0" prefHeight="18.0" prefWidth="190.0" />
+      <Label fx:id="passwordMessageLabel" layoutX="324.0" layoutY="278.0" prefHeight="18.0" prefWidth="190.0" />
+      <Label fx:id="emailMessageLabel" layoutX="324.0" layoutY="340.0" prefHeight="18.0" prefWidth="190.0" />
+      <Label fx:id="phoneNumberMessageLabel" layoutX="615.0" layoutY="173.0" prefHeight="18.0" prefWidth="167.0" />
+   </children>
+</AnchorPane>
