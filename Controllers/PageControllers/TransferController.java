@@ -33,6 +33,7 @@ public class TransferController extends PageController implements Initializable,
 
     private CoinsOfCSV coinsOfCSV;
     private MenuItem[] menuItemsOfchoseYourCoin;
+    private boolean charge = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -140,12 +141,15 @@ public class TransferController extends PageController implements Initializable,
         if (foundUser == null) {
             destinationUser = null;
             searchsResultIdLabel.setText("user not found");
+            charge = false;
         } else if (foundUser.equals(user)) {
             destinationUser = null;
-            searchsResultIdLabel.setText("you can't transfer to yourself");
+            searchsResultIdLabel.setText("you are charging your wallet");
+            charge = true;
         } else {
             destinationUser = foundUser;
             searchsResultIdLabel.setText("user's username: " + destinationUser.getUsername());
+            charge = false;
         }
         
     }
@@ -166,13 +170,17 @@ public class TransferController extends PageController implements Initializable,
     }
 
     private boolean checkPriceWithArrow() {
-        if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText()) + 0.1) {
-            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
-            return false;
-        } else {
-            toInvisible(priceMessageLabel);
-            return true;
+        if (!charge) {
+            if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText()) + 0.1) {
+                toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+                return false;
+            } else {
+                toInvisible(priceMessageLabel);
+                return true;
+            }
         }
+        return true;
+        
     }
 
     @FXML
@@ -193,18 +201,21 @@ public class TransferController extends PageController implements Initializable,
 
     @FXML
     private boolean checkPrice() {
-        if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText())) {
-            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
-            return false;
-        } else {
-            toInvisible(priceMessageLabel);
-            return true;
+        if (!charge) {
+            if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText())) {
+                toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+                return false;
+            } else {
+                toInvisible(priceMessageLabel);
+                return true;
+            }
         }
+        return true;
     }
 
     @FXML 
     private void afterTransfer() {
-        if (!searchsResultIdLabel.getText().startsWith("user's username:")) {
+        if (searchsResultIdLabel.getText().contains("not found")) {
             transferMessageLabel.setText("set the correct wallet id for destinatoin wallet");
             return;
         }
@@ -218,6 +229,10 @@ public class TransferController extends PageController implements Initializable,
         }
         else if (!checkAmount()) {
             transferMessageLabel.setText("lack of coin");
+            return;
+        }
+        if (charge) {
+            user.increaseMoneyWelth(Double.parseDouble(priceTextField.getText()));
             return;
         }
 
