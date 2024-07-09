@@ -84,6 +84,10 @@ public class CoinsInfo {
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
     }
+
+    public int getCoinsIndex() {
+        return CoinsNameAndIndex.getCoinsNameAndIndexOfName(this.name).getIndex();
+    }
     
 
 }
