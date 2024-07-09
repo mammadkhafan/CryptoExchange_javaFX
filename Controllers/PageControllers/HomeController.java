@@ -13,16 +13,17 @@ import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 import java.util.Collections;
 import CoinPackage.*;
+import Controllers.ForAllControllers.PageController;
 
-public class HomeController implements Initializable{
+public class HomeController extends PageController implements Initializable{
     @FXML
     private GridPane gridPane;
 
     @FXML
     private Label assetLabel;
 
-    @FXML
-    private MenuButton pageMenuButton;
+    // @FXML
+    // private MenuButton pageMenuButton;
 
     private final int assetColumn = 1;
     private final int imageColumn = 0;
@@ -128,6 +129,7 @@ public class HomeController implements Initializable{
     @FXML
     private void sortByPrice() {
         sortCoins(SortBy.PRICE, SortType.ASCENDING);
+        System.out.println(user.getLastName());
     }
 
     @FXML
@@ -221,10 +223,6 @@ public class HomeController implements Initializable{
         return extractedNumber;
     }
 
-    @FXML
-    private void openPagesMenuButton() {
-        pageMenuButton.show();
-    }
 }
 
 enum SortBy {

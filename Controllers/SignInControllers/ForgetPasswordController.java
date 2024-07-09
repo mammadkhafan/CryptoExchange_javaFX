@@ -5,9 +5,11 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.ErrorMessage;
 import MainPackage.Main;
+import MainPackage.Regex;
+import MainPackage.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,7 +83,6 @@ public class ForgetPasswordController extends SignInMethods{
         } else if (!repeatPasswordPasswordField.getText().isEmpty()){
             Color red = Color.web("#FF6347");
             repeatPasswordMessage.setTextFill(red);
-
             repeatPasswordMessage.setText("Repeat password and password are not the same");
         }
     }
@@ -104,6 +105,7 @@ public class ForgetPasswordController extends SignInMethods{
         if (inputCode.equals(code)) {
             toCorrect(codeMessage);
             codeEntered = true;
+            emailTextField.setDisable(true);
         } else {
             Color red = Color.web("#FF6347");
             codeMessage.setTextFill(red);
@@ -120,11 +122,9 @@ public class ForgetPasswordController extends SignInMethods{
                 newPasswordMessage, 
                 repeatPasswordMessage};
         if (isEveryThingOk(messages)) {
-            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            User user = Main.book.getUserWithEmail(emailTextField.getText());
+            user.setPassword(repeatPasswordPasswordField.getText());
+            changeScene(event, "../../FXMLFiles/HomePage.fxml", user.getUsername());
         }
     }
 

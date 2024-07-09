@@ -2,13 +2,11 @@ package Controllers.PageControllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import CoinPackage.CoinsNameAndIndex;
 import CoinPackage.CoinsOfCSV;
 import Controllers.ForAllControllers.LabelFlexible;
-import Controllers.ForAllControllers.SignInMethods.ErrorMessage;
-import MainPackage.Main;
-import MainPackage.User;
+import Controllers.ForAllControllers.PageController;
+import MainPackage.ErrorMessage;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -16,10 +14,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-
 import java.util.function.UnaryOperator;
 
-public class SwapController implements Initializable, LabelFlexible{
+public class SwapController extends PageController implements Initializable, LabelFlexible{
     @FXML
     private MenuButton pageMenuButton, originMenuButton, destinationMenuButton;
 
@@ -160,16 +157,9 @@ public class SwapController implements Initializable, LabelFlexible{
             double destinatoinDoubleAmount = originAmount * (coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(destinationCoinsName)) / coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originCoinsName)));
             int destinatoinIntAmount = (int) destinatoinDoubleAmount;
 
-            User user = Main.book.getUserWithUsername("username");
             user.decreaseMoneyWelth(swapingPrice * 0.01);
             user.increseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(destinatoinIntAmount).getIndex(), destinatoinIntAmount);
             user.decreaseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(originAmount).getIndex(), originAmount);
         }
     }
-
-    @FXML
-    private void openPagesMenuButton() {
-        pageMenuButton.show();
-    }
-
 }

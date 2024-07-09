@@ -3,9 +3,8 @@ package Controllers.PageControllers;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import MainPackage.User;
 import CoinPackage.CoinsOfCSV;
+import Controllers.ForAllControllers.PageController;
 import MainPackage.CoinsInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-public class WalletController implements Initializable{
+public class WalletController extends PageController implements Initializable{
     @FXML
     private MenuButton pageMenuButton;
 
@@ -28,8 +27,6 @@ public class WalletController implements Initializable{
 
     @FXML
     private LineChart<Integer , Double> welthChart;
-
-    User user;
 
     private ArrayList<ImageView> images = new ArrayList<>();
     private ArrayList<Label> amounts = new ArrayList<>();
@@ -76,10 +73,4 @@ public class WalletController implements Initializable{
         amounts.add(amount);
         images.add(image);
     }
-
-    @FXML
-    private void openPagesMenuButton() {
-        pageMenuButton.show();
-    }
-
 }

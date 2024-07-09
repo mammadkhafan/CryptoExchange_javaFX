@@ -5,7 +5,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.ErrorMessage;
 import MainPackage.Main;
+import MainPackage.Regex;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,11 +65,7 @@ public class LoginController extends SignInMethods implements Initializable{
         Label[] messages = {usernameMessage, passwordMessage, captchaCodeMessage};
         if (isEveryThingOk(messages)) {
             if (Main.book.findUserWithUsernameAndPassword(usernameTextField.getText(), passwordPasswordField.getText())) {
-                root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/HomePage.fxml"));
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                changeScene(event, "../../FXMLFiles/HomePage.fxml", usernameTextField.getText());
             } else {
                 loginMessageLabel.setText("Account didn't found");
             }

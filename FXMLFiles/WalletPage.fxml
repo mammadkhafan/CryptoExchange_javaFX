@@ -19,23 +19,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.HomeController">
    <children>
-      <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
-         <items>
-            <MenuItem mnemonicParsing="false" text="Home" />
-            <MenuItem mnemonicParsing="false" text="Exchange" />
-            <MenuItem mnemonicParsing="false" text="Swap" />
-            <MenuItem mnemonicParsing="false" text="Token" />
-            <MenuItem disable="true" mnemonicParsing="false" text="Wallet" />
-            <MenuItem mnemonicParsing="false" text="Profile" />
-         </items>
-      </MenuButton>
       <Label alignment="CENTER" layoutX="324.0" layoutY="-6.0" prefHeight="62.0" prefWidth="281.0" style="-fx-text-fill: GREEN;" text="WALLET PAGE">
          <font>
             <Font size="42.0" />
          </font>
       </Label>
       <Line endX="829.0000610351562" layoutX="100.0" layoutY="53.0" startX="-100.0" />
-      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="41.0" onMouseClicked="#openPagesMenuButton" size="3em" wrappingWidth="31.20013427734375" />
       <ImageView fitHeight="53.0" fitWidth="129.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Image/CompanyLogo.jpg" />
@@ -83,5 +72,16 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <MenuButton fx:id="pageMenuButton" layoutX="835.0" layoutY="3.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
+            <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
+            <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
+         </items>
+      </MenuButton>
+      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="39.0" onMouseClicked="#openPagesMenuButton" size="3em" text="" wrappingWidth="31.20013427734375" />
    </children>
 </AnchorPane>

@@ -1,6 +1,6 @@
 package Controllers.ForAllControllers;
 
-import Controllers.ForAllControllers.SignInMethods.ErrorMessage;
+import MainPackage.ErrorMessage;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 

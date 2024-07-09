@@ -111,6 +111,14 @@ public class Book {
         pendingExchanges.remove(pending2);
     }
 
+    public void addToPendingExchanges(PendingExchange pending) {
+        pendingExchanges.add(pending);
+    }
+
+    public void addToComplitedExchanges(ComplitedExchange complited) {
+        complitedExchanges.add(complited);
+    } 
+
     public void addUser(User newUser) {
         users.add(newUser);
     }
@@ -165,5 +173,25 @@ public class Book {
             }
         }
         return null;
+    }
+
+    public int getUsersSize() {
+        return this.users.size();
+    }
+
+    public int getPendingExchangesSize() {
+        return this.pendingExchanges.size();
+    }
+
+    public int getComplitedExchangesSize() {
+        return this.complitedExchanges.size();
+    }
+
+    public PendingExchange getPendingExchangeAt(int index) {
+        return pendingExchanges.get(index);
+    }
+
+    public ComplitedExchange getComplitedExchangeAt(int index) {
+        return complitedExchanges.get(index);
     }
 }

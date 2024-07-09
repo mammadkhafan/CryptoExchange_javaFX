@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Controllers.ForAllControllers.SignInMethods;
+import MainPackage.ErrorMessage;
 import MainPackage.Main;
+import MainPackage.Regex;
 import MainPackage.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
@@ -50,7 +52,7 @@ public class SignUpController extends SignInMethods implements Initializable{
 
     private int randomIndex;
 
-    private User user;
+    public User user;
 
     private String[] countryNumbers = 
     {"Brazil +55", 
@@ -170,13 +172,9 @@ public class SignUpController extends SignInMethods implements Initializable{
     private void afterCreateMyAccount(ActionEvent event) throws IOException {
         Label[] messages = {firstNameMessage, lastNameMessage, usernameMessage, emailMessage, phoneNumberMessage, passwordMessage,  repeatPasswordMessage, captchaCodeMessage, profileImageName};
         if (isEveryThingOk(messages)) {
-            user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
+            user = new User(firstNameTextField.getText(), lastNameTextField.getText(), usernameTextField.getText(), emailTextField.getText(), countryNumbersComboBox.getValue() + phoneNumberTextField.getText(), passwordPasswordField.getText(), profileImage);
             Main.book.addUser(user);
-            root = FXMLLoader.load(getClass().getResource("../../FXMLFiles/LoginPage.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            changeScene(event, "../../FXMLFiles/LoginPage.fxml", usernameTextField.getText());
         }
     }
 

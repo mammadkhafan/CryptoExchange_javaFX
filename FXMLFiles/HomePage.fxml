@@ -21,12 +21,12 @@
    <children>
       <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
         <items>
-          <MenuItem disable="true" mnemonicParsing="false" text="Home" />
-          <MenuItem mnemonicParsing="false" text="Exchange" />
-            <MenuItem mnemonicParsing="false" text="Swap" />
-            <MenuItem mnemonicParsing="false" text="Token" />
-            <MenuItem mnemonicParsing="false" text="Wallet" />
-            <MenuItem mnemonicParsing="false" text="Profile" />
+          <MenuItem disable="true" mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
+          <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
+            <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
+            <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
         </items>
       </MenuButton>
       <GridPane fx:id="gridPane" layoutX="202.0" layoutY="118.0" prefHeight="20.0" prefWidth="526.0">

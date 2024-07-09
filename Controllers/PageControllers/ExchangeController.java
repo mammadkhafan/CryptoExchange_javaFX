@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,20 +13,30 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.UnaryOperator;
+
+import BookPackage.ComplitedExchange;
+import BookPackage.Exchange;
 import BookPackage.ExchangeType;
 import BookPackage.PendingExchange;
 import CoinPackage.CoinsNameAndIndex;
 import CoinPackage.CoinsOfCSV;
-import Controllers.ForAllControllers.SignInMethods;
+import Controllers.ForAllControllers.LabelFlexible;
+import Controllers.ForAllControllers.PageController;
+import MainPackage.ErrorMessage;
 import MainPackage.Main;
 
-public class ExchangeController extends SignInMethods implements Initializable{
+public class ExchangeController extends PageController implements Initializable, LabelFlexible{
     @FXML
     private MenuButton pageMenuButton, choseYourCoinMenuButton;
 
@@ -37,6 +48,18 @@ public class ExchangeController extends SignInMethods implements Initializable{
 
     @FXML
     private TextField amountTextField, priceTextField;
+
+    @FXML
+    private GridPane historyGridPane;
+
+    private ArrayList<Label> weldingsTypes = new ArrayList<>();
+    private ArrayList<Label> exchangesTypes = new ArrayList<>();
+    private ArrayList<Label> exchangesvalues = new ArrayList<>();
+
+    private final int weldingsTypeColumn = 0;
+    private final int exchangeTypeColumn = 1;
+    private final int exchangesValueColumn = 2;
+
 
     @FXML
     private Label choseYourCoinMessageLabel, amountMessageLabel, priceMessageLabel, typeOfExchangeMessageLabel,
@@ -55,7 +78,8 @@ public class ExchangeController extends SignInMethods implements Initializable{
                 MenuItem menuItem = menuItemsOfchoseYourCoin[i];
                 menuItem.setOnAction(event -> {
                     choseYourCoinMenuButton.setText(menuItem.getText()); // Update the button text
-                    // You can add additional actions here if needed
+                    cleanColumns();
+                    fillHistoryGridPane();
                 });
             }
             choseYourCoinMenuButton.getItems().addAll(menuItemsOfchoseYourCoin);
@@ -104,9 +128,91 @@ public class ExchangeController extends SignInMethods implements Initializable{
             }
         };
 
-        TextFormatter<Double> textFormatterForPriceTextField = new TextFormatter<>(new DoubleStringConverter(), 0.0, doubleFilter);
+        TextFormatter<Double> textFormatterForPriceTextField = 
+        new TextFormatter<>(new DoubleStringConverter(), 0.0, doubleFilter);
         priceTextField.setTextFormatter(textFormatterForPriceTextField);
     
+    }
+
+    private void cleanColumns() {
+        weldingsTypes.clear();
+        exchangesTypes.clear();
+        exchangesvalues.clear();
+
+        int rowCount = historyGridPane.getRowCount();
+        for (int i = rowCount - 1; i > 0; i--) {
+            removeRow(historyGridPane, i);
+        }
+    }
+
+    private void fillHistoryGridPane() {
+        for (int i = 0; i < Main.book.getPendingExchangesSize(); i++) {
+            if (Main.book.getPendingExchangeAt(i).getUser().equals(user) 
+            && Main.book.getPendingExchangeAt(i).getCoinsName().equals(choseYourCoinMenuButton.getText())) {
+                addRow(Main.book.getPendingExchangeAt(i));
+            }
+        }
+        for (int i = 0; i < Main.book.getComplitedExchangesSize(); i++) {
+            if ((Main.book.getComplitedExchangeAt(i).getSellerUser().equals(user) 
+            || Main.book.getComplitedExchangeAt(i).getBuyerUser().equals(user)) 
+            && Main.book.getComplitedExchangeAt(i).getCoinsName().equals(choseYourCoinMenuButton.getText())) {
+                addRow(Main.book.getComplitedExchangeAt(i));
+            }
+        }
+    }
+
+    private void addRow(Exchange exchange) {
+        historyGridPane.getRowConstraints().add(new RowConstraints());
+
+        int row = historyGridPane.getRowCount() - 1;
+
+
+        Label weldingType = null;
+        Label exchangeType = null;
+
+        if (exchange instanceof PendingExchange) {
+            PendingExchange pendingExchange = (PendingExchange)exchange;
+
+            weldingType = new Label("PENDING");
+            exchangeType = new Label(pendingExchange.getExchangeType().toString());
+        }
+        else if (exchange instanceof ComplitedExchange) {
+            ComplitedExchange complitedExchange = (ComplitedExchange)exchange;
+
+            weldingType = new Label("COMPLITED");
+            if (complitedExchange.getBuyerUser().equals(user)) {
+                exchangeType = new Label(ExchangeType.BUY.toString());
+            } else if (complitedExchange.getSellerUser().equals(user)) {
+                exchangeType = new Label(ExchangeType.SELL.toString());
+            }
+        }
+        Label exchangevalue = new Label(exchange.getCoinsName()
+         + "(" + String.format("%.1f", exchange.getPriceOfEachCoin()) + ") * " + exchange.getAmountOfCoin());
+
+        weldingType.setAlignment(Pos.CENTER);
+        exchangeType.setAlignment(Pos.CENTER);
+        exchangevalue.setAlignment(Pos.CENTER);
+
+        historyGridPane.add(weldingType, weldingsTypeColumn, row);
+        historyGridPane.add(exchangeType, exchangeTypeColumn, row);
+        historyGridPane.add(exchangevalue, exchangesValueColumn, row);
+
+        weldingsTypes.add(weldingType);
+        exchangesTypes.add(exchangeType);
+        exchangesvalues.add(exchangevalue);
+    }
+
+    public void removeRow(GridPane gridPane, int row) {
+    Set<Node> nodesToRemove = new HashSet<>();
+
+    for (Node child : gridPane.getChildren()) {
+        Integer rowIndex = GridPane.getRowIndex(child);
+        if (rowIndex != null && rowIndex == row) {
+            nodesToRemove.add(child);
+        }
+    }
+
+    gridPane.getChildren().removeAll(nodesToRemove);
     }
 
     @FXML
@@ -140,20 +246,26 @@ public class ExchangeController extends SignInMethods implements Initializable{
     }
 
     @FXML
-    private void openPagesMenuButton() {
-        pageMenuButton.show();
-    }
-
-    @FXML
     private void afterRequestRegistration() {
         int amount = Integer.parseInt(amountTextField.getText());
         double price = Double.parseDouble(priceTextField.getText());
+        
         boolean sw = true;
 
         if (amount == 0) {
             toError(amountMessageLabel, ErrorMessage.amountEmptyErrorMessage);
             sw = false;
         } else toInvisible(amountMessageLabel);
+
+        if (amount > user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()).getIndex())) {
+            sw = false;
+            toError(amountMessageLabel, ErrorMessage.lackOfAmount);
+        } else toInvisible(amountMessageLabel);
+
+        if (price * amount > user.getMoneyWelth()) {
+            sw = false;
+            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+        } else toInvisible(priceMessageLabel);
 
         if (price == 0.0) {
             toError(priceMessageLabel, ErrorMessage.priceEmptyErrorMessage);
@@ -173,10 +285,10 @@ public class ExchangeController extends SignInMethods implements Initializable{
         if (sw) {
             PendingExchange newExchange = null;
             if (buyRadioButton.isSelected()) {
-                newExchange = new PendingExchange(null, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
+                newExchange = new PendingExchange(user, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
             } 
             else if (sellRadioButton.isSelected()) {
-                newExchange = new PendingExchange(null, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
+                newExchange = new PendingExchange(user, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
             }
 
             String dealsResult = Main.book.weldTheDeal(newExchange).getDealsResult();

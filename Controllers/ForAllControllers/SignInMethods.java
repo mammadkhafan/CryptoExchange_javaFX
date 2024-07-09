@@ -1,6 +1,13 @@
 package Controllers.ForAllControllers;
 
 
+import java.io.IOException;
+import MainPackage.ErrorMessage;
+import MainPackage.Main;
+import MainPackage.Regex;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,10 +18,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SignInMethods implements LabelFlexible{
+    protected FXMLLoader loader;
+    protected PageController controller;
     protected Stage stage;
     protected Scene scene;
     protected Parent root;
-
     protected Image captchaImage;
 
     protected Image[] captchaImages =
@@ -55,41 +63,17 @@ public class SignInMethods implements LabelFlexible{
         "3dIHDds"
     };
 
-    public enum Regex {
-        emailRegex("^[a-zA-Z]{1,1}[a-zA-Z0-9-_.]{4,63}@[a-zA-Z]+\\.[a-zA-z]+$"),
-        usernameRegex("[a-zA-Z]{1,1}[a-zA-Z0-9_]{2,12}"),
-        passwordRegex("^[a-zA-Z0-9]{5,15}$"),
-        nameRegex("^[a-zA-Z ]{2,20}$"),
-        phoneNumberRegex("^[0-9]{4,10}$");
 
-        public String regexStr;
-
-        Regex(String regex) {
-            this.regexStr = regex;
-        }
-    }
-
-    public enum ErrorMessage {
-        emailErrorMessage("valid chars: a-Z(one at least) 0-9 - _ ."),
-        usernameErrorMessage("valid chars: (start with)a-Z 0-9 _"),
-        passwordErrorMessage("valid chars: a-Z 0-9 (length: min 6-max 15)"),
-        nameErrorMessage("valid chars: a-Z space"),
-        phoneNumberErrorMessage("valid chars: 0-9 (length: min 4-max 10)"),
-        captchaErrorMessage("your Input doesn't mach"),
-        emailNotFoundErrorMessage("Email not found in our users emails"),
-        emailSentInLastMinuteErrorMessage("you have to wait one minute"),
-        interCodeBeforeSetPassword("inter your generated code befor set new password"),
-        amountEmptyErrorMessage("you didn't set the amount (most be more than 0)"),
-        priceEmptyErrorMessage("you didn't set the price (most be more than 0.0)"),
-        choseYourCoinEmptyErrorMessage("chose that coin you want to exchange with"),
-        typeOfExchangeDoesNotSelectedErrorMessage("you have to select your exchange type"),
-        selectOriginAndDestinationErrorMessage("select origin and destinatoin coins first");
-
-        public String errorMessage;
-
-        ErrorMessage(String errorMessage) {
-            this.errorMessage = errorMessage;
-        }
+    public void changeScene(ActionEvent event, String path, String username) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+        root = loader.load();
+        controller = loader.getController();
+        controller.setUser(Main.book.getUserWithUsername(username));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        controller.setStage(stage);
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public boolean isValid(String input, String regex){
