@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -86,5 +87,6 @@
       <Line endX="529.5" endY="-1.499969482421875" layoutX="251.0" layoutY="90.0" startX="-100.0" />
       <AnchorPane layoutX="762.0" layoutY="56.0" onMouseMoved="#initializeWithMouseMove" prefHeight="201.0" prefWidth="154.0" />
       <Line endX="99.99996948242188" endY="200.0" layoutX="176.0" layoutY="268.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Button fx:id="expendButton" layoutX="407.0" layoutY="493.0" mnemonicParsing="false" onAction="#exportGridPaneToCSV" text="Expend as a csv file" />
    </children>
 </AnchorPane>

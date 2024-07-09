@@ -17,6 +17,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.FileChooser;
+import javafx.scene.control.Button;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class HistoryController extends PageController implements MostHaveInitialize{
     @FXML
@@ -24,6 +30,9 @@ public class HistoryController extends PageController implements MostHaveInitial
 
     @FXML
     private GridPane historyGridPane;
+
+    @FXML
+    private Button expendButton;
 
     private ArrayList<Label> dates = new ArrayList<>();
     private ArrayList<Label> times = new ArrayList<>();
@@ -47,6 +56,54 @@ public class HistoryController extends PageController implements MostHaveInitial
             cleanColumns();
             fillHistoryGridPane();
         }
+    }
+
+    @FXML
+    private void exportGridPaneToCSV() throws IOException {
+        StringBuilder csvData = new StringBuilder();
+        int numRows = historyGridPane.getRowCount();
+        int numCols = historyGridPane.getColumnCount();
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                Label label = (Label) getNodeFromGridPane(historyGridPane, col, row);
+                if (label != null) {
+                    csvData.append(label.getText());
+                }
+                if (col < numCols - 1) {
+                    csvData.append(",");
+                }
+            }
+            csvData.append("\n");
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(expendButton.getScene().getWindow());
+
+        if (file != null) {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(csvData.toString());
+            fileWriter.close();
+        }
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            Integer nodeRow = GridPane.getRowIndex(node);
+            if (nodeCol == null) {
+                nodeCol = 0; // Default to 0 if column index is null
+            }
+            if (nodeRow == null) {
+                nodeRow = 0; // Default to 0 if row index is null
+            }
+            if (nodeCol == col && nodeRow == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
     private void cleanColumns() {
