@@ -114,6 +114,20 @@ public class CoinsOfCSV {
         else return Math.round(change * 100.0) / 100.0;
     }
 
+    public RowOfCsvFile getCurrentTimesRawOfCSVFile() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
+        for (int i = 0; i < rowOfCsvFileList.size() - 1; i++) {
+            
+            LocalTime time1 = LocalTime.parse(rowOfCsvFileList.get(i).getTime(), formatter);
+            LocalTime time2 = LocalTime.parse(rowOfCsvFileList.get(i + 1).getTime(), formatter);
+
+            if (IscurrentTimebetween(time1, time2)) {
+                return rowOfCsvFileList.get(i);
+            }
+        }
+        return null;
+    }
+
     public static boolean IscurrentTimebetween(LocalTime time1, LocalTime time2) {
         LocalDateTime now = LocalDateTime.now();
         int hourNow = now.getHour() + 1;

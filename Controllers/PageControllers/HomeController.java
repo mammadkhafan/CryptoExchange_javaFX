@@ -13,8 +13,6 @@ import javafx.scene.layout.RowConstraints;
 import java.util.ArrayList;
 import java.util.Collections;
 import CoinPackage.*;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class HomeController implements Initializable{
     @FXML
@@ -94,18 +92,8 @@ public class HomeController implements Initializable{
     private void setPrices() {
         double[] nowPrices = new double[coinsOfCSV.getAllCoins().size()];
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
-        for (int i = 0; i < coinsOfCSV.getRowOfCsvFileList().size() - 1; i++) {
-            
-            LocalTime time1 = LocalTime.parse(coinsOfCSV.getRowOfCsvFileList().get(i).getTime(), formatter);
-            LocalTime time2 = LocalTime.parse(coinsOfCSV.getRowOfCsvFileList().get(i + 1).getTime(), formatter);            
-
-            if (CoinsOfCSV.IscurrentTimebetween(time1, time2)) {
-                for (int j = 0; j < nowPrices.length; j++) {
-                    nowPrices[j] = coinsOfCSV.getPriceOfCoin(coinsOfCSV.getRowOfCsvFileList().get(i), CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(j));
-                }
-                break;
-            }
+        for (int j = 0; j < nowPrices.length; j++) {
+            nowPrices[j] = coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(j));
         }
 
         for (int i = 0; i < coinsOfCSV.getAllCoins().size(); i++) {

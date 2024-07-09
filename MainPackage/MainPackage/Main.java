@@ -20,8 +20,9 @@ public class Main extends Application {
         // Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/LoginPage.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/SignUp.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/ForgetPassword.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/HomePage.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/HomePage.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/ExchangePage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/SwapPage.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

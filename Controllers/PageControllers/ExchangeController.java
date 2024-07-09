@@ -35,7 +35,6 @@ public class ExchangeController extends SignInMethods implements Initializable{
     @FXML
     private RadioButton buyRadioButton, sellRadioButton;
 
-    
     @FXML
     private TextField amountTextField, priceTextField;
 

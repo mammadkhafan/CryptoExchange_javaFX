@@ -82,7 +82,8 @@ public class SignInMethods implements LabelFlexible{
         amountEmptyErrorMessage("you didn't set the amount (most be more than 0)"),
         priceEmptyErrorMessage("you didn't set the price (most be more than 0.0)"),
         choseYourCoinEmptyErrorMessage("chose that coin you want to exchange with"),
-        typeOfExchangeDoesNotSelectedErrorMessage("you have to select your exchange type");
+        typeOfExchangeDoesNotSelectedErrorMessage("you have to select your exchange type"),
+        selectOriginAndDestinationErrorMessage("select origin and destinatoin coins first");
 
         public String errorMessage;
 
