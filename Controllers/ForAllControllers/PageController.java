@@ -75,6 +75,11 @@ public class PageController {
     }
 
     @FXML
+    protected void trensferMenuItemPressed(ActionEvent event) throws IOException {
+        changeScene(event, "../../FXMLFiles/TransferPage.fxml");
+    }
+
+    @FXML
     protected void walletMenuItemPressed(ActionEvent event) throws IOException {
         changeScene(event, "../../FXMLFiles/WalletPage.fxml");
     }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.TransferController">
+   <children>
+      <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
+            <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Transfer" />
+            <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
+            <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
+         </items>
+      </MenuButton>
+      <Label alignment="CENTER" layoutX="319.0" layoutY="-6.0" prefHeight="62.0" prefWidth="290.0" style="-fx-text-fill: GREEN;" text="TRANSFR PAGE">
+         <font>
+            <Font size="42.0" />
+         </font>
+      </Label>
+      <Line endX="829.0000610351562" layoutX="100.0" layoutY="53.0" startX="-100.0" />
+      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="41.0" onMouseClicked="#openPagesMenuButton" size="3em" wrappingWidth="31.20013427734375" />
+      <ImageView fitHeight="53.0" fitWidth="129.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/CompanyLogo.jpg" />
+         </image>
+      </ImageView>
+      <MenuButton fx:id="coinsNameMenuButton" layoutX="121.0" layoutY="273.0" mnemonicParsing="false" popupSide="RIGHT" prefHeight="26.0" prefWidth="99.0" text="Coins name" />
+      <TextField fx:id="amountTextField" layoutX="121.0" layoutY="320.0" onAction="#checkAmount" prefHeight="26.0" prefWidth="67.0" text="0" />
+      <Line endX="38.999969482421875" endY="27.49999237060547" layoutX="426.0" layoutY="66.0" startX="38.999969482421875" startY="471.199951171875" />
+      <Line endX="447.0" endY="-7.62939453125E-6" layoutX="483.0" layoutY="94.0" startX="-483.0" startY="-7.62939453125E-6" />
+      <TextField fx:id="walletIdTextField" layoutX="129.0" layoutY="60.0" />
+      <Label layoutX="14.0" layoutY="64.0" prefHeight="18.0" prefWidth="115.0" text="Destination wallet id" />
+      <Button layoutX="289.0" layoutY="61.0" mnemonicParsing="false" onAction="#afterSearchButton" text="search" />
+      <Label fx:id="searchsResultIdLabel" layoutX="351.0" layoutY="65.0" prefHeight="18.0" prefWidth="207.0" />
+      <Label layoutX="179.0" layoutY="106.0" text="To transfer coin" />
+      <Label layoutX="651.0" layoutY="106.0" text="To transfer money" />
+      <Line endX="466.0" layoutX="464.0" layoutY="139.0" startX="-464.0" />
+      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="198.0" layoutY="330.0" onMouseClicked="#increaseAmountValue" text="" />
+      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="198.0" layoutY="345.0" onMouseClicked="#decreaseAmountValue" text="" />
+      <Button layoutX="435.0" layoutY="538.0" mnemonicParsing="false" onAction="#afterTransfer" text="Transfer" />
+      <Line endX="465.0" layoutX="465.0" layoutY="538.0" startX="-465.0" />
+      <TextField fx:id="priceTextField" layoutX="617.0" layoutY="302.0" onAction="#checkPrice" prefHeight="26.0" prefWidth="67.0" text="0" />
+      <FontAwesomeIcon glyphName="ARROW_UP" layoutX="693.0" layoutY="315.0" onMouseClicked="#increasePriceValue" text="" />
+      <FontAwesomeIcon glyphName="ARROW_DOWN" layoutX="693.0" layoutY="327.0" onMouseClicked="#decreasePriceValue" text="" />
+      <AnchorPane layoutX="724.0" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label fx:id="amountMessageLabel" layoutX="121.0" layoutY="346.0" prefHeight="18.0" prefWidth="343.0" />
+      <Label fx:id="priceMessageLabel" layoutX="617.0" layoutY="331.0" prefHeight="18.0" prefWidth="312.0" />
+      <Label fx:id="transferMessageLabel" alignment="CENTER" layoutX="152.0" layoutY="564.0" prefHeight="18.0" prefWidth="624.0" />
+   </children>
+</AnchorPane>

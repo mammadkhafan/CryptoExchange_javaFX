@@ -121,6 +121,7 @@ public class Book {
 
     public void addUser(User newUser) {
         users.add(newUser);
+        newUser.generateWalletID();
     }
 
     public void removeUser(User user) {
@@ -155,6 +156,15 @@ public class Book {
             }
         }
         return false;
+    }
+
+    public User getUserWithWalletId(String walletId) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getWalletId().equals(walletId)) {
+                return users.get(i);
+            }
+        }
+        return null;
     }
 
     public User getUserWithEmail(String email) {

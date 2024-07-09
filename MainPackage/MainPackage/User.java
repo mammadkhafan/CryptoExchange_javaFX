@@ -41,8 +41,6 @@ public class User {
         for (int i = 0; i < coinWelth.length; i++) {
             coinWelth[i] = 0;
         }
-
-        generateWalletID();
     }
 
     public void increaseMoneyWelth(double money) {
@@ -187,7 +185,7 @@ public class User {
         return this.walletId;
     }
 
-    private void generateWalletID() {
+    public void generateWalletID() {
         StringBuilder walletId = new StringBuilder(walletIdLength);
         for (int i = 0; i < walletIdLength; i++) {
             walletId.append(validCharsInWalletId.charAt(new Random().nextInt(validCharsInWalletId.length())));
