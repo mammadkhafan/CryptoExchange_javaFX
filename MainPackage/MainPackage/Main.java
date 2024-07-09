@@ -20,6 +20,7 @@ public class Main extends Application {
         //HARD CODE
         User user = new User("mohammad mahdi", "sharif razavian", "mammad", "sharifrazavianm@gmail.com", "+989028021906", "13045949", null);
         book.addUser(user);
+        user.increseCoinWelthAt(CoinsNameAndIndex.USD.getIndex(), 5);
         book.addToPendingExchanges(new PendingExchange(user, ExchangeType.BUY, CoinsNameAndIndex.USD, 15, 1.05));
         book.addToComplitedExchanges(new ComplitedExchange(user, user, CoinsNameAndIndex.EUR, 5, 4.5));
         //--------

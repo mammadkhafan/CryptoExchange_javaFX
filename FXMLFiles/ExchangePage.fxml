@@ -110,5 +110,7 @@
             </GridPane>
          </content>
       </ScrollPane>
+      <Line endX="-15.00714111328125" endY="15.0" layoutX="696.0" layoutY="119.0" startX="-15.00714111328125" startY="389.3999938964844" />
+      <Line endX="269.0" endY="17.0" layoutX="532.0" layoutY="117.0" startX="269.0" startY="391.3999938964844" />
    </children>
 </AnchorPane>

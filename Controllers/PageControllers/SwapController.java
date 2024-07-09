@@ -9,6 +9,7 @@ import Controllers.ForAllControllers.PageController;
 import MainPackage.ErrorMessage;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -24,8 +25,10 @@ public class SwapController extends PageController implements Initializable, Lab
     private TextField amountTextField, destinationTextField;
 
     @FXML 
-    private Label selectOriginAndDestinationMessageLabel, amountOfSwapingLabel;
+    private Label originAndDestinationMessageLabel, amountOfSwapingLabel;
 
+    @FXML
+    private Button swapItButton;
 
     private CoinsOfCSV coinsOfCSV;
     private MenuItem[] menuItemsOfOrigin;
@@ -33,6 +36,7 @@ public class SwapController extends PageController implements Initializable, Lab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        swapItButton.setDisable(true);
         coinsOfCSV = new CoinsOfCSV("C:\\Users\\ASUS\\Desktop\\TermTow\\FinalProject(TermTwo)\\src\\Files\\currency_prices.csv");
 
 
@@ -105,9 +109,20 @@ public class SwapController extends PageController implements Initializable, Lab
     @FXML
     private void increaseAmountValue() {
         if (originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination")) {
-            toError(selectOriginAndDestinationMessageLabel, ErrorMessage.selectOriginAndDestinationErrorMessage);
-        } else {
-            toInvisible(selectOriginAndDestinationMessageLabel);
+            toError(originAndDestinationMessageLabel, ErrorMessage.selectOriginAndDestinationErrorMessage);
+            swapItButton.setDisable(true);
+        }
+        else if 
+        (user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(originMenuButton.getText()).getIndex()) - 1
+        < Double.parseDouble(amountTextField.getText()) 
+        * coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originMenuButton.getText()))) 
+        {
+            toError(originAndDestinationMessageLabel, ErrorMessage.lackOfAmount);
+            swapItButton.setDisable(true);
+        } 
+        else {
+            swapItButton.setDisable(false);
+            toInvisible(originAndDestinationMessageLabel);
             int currentAmount = Integer.parseInt(amountTextField.getText());
             amountTextField.setText(String.valueOf(currentAmount + 1));
             convertAmount();
@@ -117,9 +132,11 @@ public class SwapController extends PageController implements Initializable, Lab
     @FXML
     private void decreaseAmountValue() {
         if (originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination")) {
-            toError(selectOriginAndDestinationMessageLabel, ErrorMessage.selectOriginAndDestinationErrorMessage);
+            toError(originAndDestinationMessageLabel, ErrorMessage.selectOriginAndDestinationErrorMessage);
+            swapItButton.setDisable(true);
         } else {
-            toInvisible(selectOriginAndDestinationMessageLabel);
+            swapItButton.setDisable(false);
+            toInvisible(originAndDestinationMessageLabel);
             int currentAmount = Integer.parseInt(amountTextField.getText());
             if (currentAmount - 1 >= 0) {
                 amountTextField.setText(String.valueOf(currentAmount - 1));
@@ -146,9 +163,10 @@ public class SwapController extends PageController implements Initializable, Lab
         
     }
 
+
     @FXML
     private void afterSwapIt() {
-        if (!(amountTextField.getText().equals("0") || originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination"))) {
+        if (!(amountTextField.getText().equals("0") || originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination")) || swapItButton.isDisable()) {
             int originAmount = Integer.parseInt(amountTextField.getText());
             String originCoinsName = originMenuButton.getText();
             String destinationCoinsName = destinationMenuButton.getText();
@@ -157,7 +175,6 @@ public class SwapController extends PageController implements Initializable, Lab
             double destinatoinDoubleAmount = originAmount * (coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(destinationCoinsName)) / coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originCoinsName)));
             int destinatoinIntAmount = (int) destinatoinDoubleAmount;
 
-            user.decreaseMoneyWelth(swapingPrice * 0.01);
             user.increseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(destinatoinIntAmount).getIndex(), destinatoinIntAmount);
             user.decreaseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(originAmount).getIndex(), originAmount);
         }
