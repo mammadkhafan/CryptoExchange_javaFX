@@ -2,6 +2,7 @@ package MainPackage;
 
 import CoinPackage.CoinsOfCSV;
 import javafx.scene.image.ImageView;
+import java.util.Random;
 
 public class User {
     private String firstName;
@@ -11,9 +12,13 @@ public class User {
     private String phoneNumber;
     private String password;
     private ImageView profileImage;
+    private String walletId;
 
     private double moneyWelth;
     private int[] coinWelth;
+
+    private final String validCharsInWalletId = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private final int walletIdLength = 7;
 
 
     public User(String firsName, String lastName, String username, String email, String phoneNumber, String password, ImageView profileImage) {
@@ -32,6 +37,8 @@ public class User {
         for (int i = 0; i < coinWelth.length; i++) {
             coinWelth[i] = 0;
         }
+
+        generateWalletID();
     }
 
     public void increaseMoneyWelth(double money) {
@@ -126,6 +133,19 @@ public class User {
 
     public int getCoinWelthAt(int index) {
         return coinWelth[index];
+    }
+
+
+    public String getWalletId() {
+        return this.walletId;
+    }
+
+    private void generateWalletID() {
+        StringBuilder walletId = new StringBuilder(walletIdLength);
+        for (int i = 0; i < walletIdLength; i++) {
+            walletId.append(validCharsInWalletId.charAt(new Random().nextInt(validCharsInWalletId.length())));
+        }
+        this.walletId = walletId.toString();
     }
 
     

@@ -8,8 +8,10 @@ import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import com.opencsv.CSVReader;
+
+import EachHourInfo.RowOfCsvFile;
+
 import java.time.LocalDateTime;
-import HomePagePackage.RowOfCsvFile;
 
 public class CoinsOfCSV {
     /*All of coins in .csv file is USD, EUR, TOMAN, YEN, GBP */

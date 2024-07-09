@@ -28,13 +28,13 @@ public class PageController {
         root = loader.load();
         controller = loader.getController();
         controller.setUser(user);
-    
+
         if (event.getSource() instanceof Node) {
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         } else {
             stage = Main.getPrimaryStage();
         }
-    
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -62,6 +62,11 @@ public class PageController {
     @FXML
     protected void swapMenuItemPressed(ActionEvent event) throws IOException {
         changeScene(event, "../../FXMLFiles/SwapPage.fxml");
+    }
+
+    @FXML
+    protected void historyMenuItemPressed(ActionEvent event) throws IOException {
+        changeScene(event, "../../FXMLFiles/HistoryPage.fxml");
     }
 
     @FXML

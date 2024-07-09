@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.HistoryController">
+   <children>
+      <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
+            <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
+            <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
+            <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
+         </items>
+      </MenuButton>
+      <Line endX="829.0000610351562" layoutX="100.0" layoutY="53.0" startX="-100.0" />
+      <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="41.0" onMouseClicked="#openPagesMenuButton" size="3em" wrappingWidth="31.20013427734375" />
+      <ImageView fitHeight="53.0" fitWidth="129.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Image/CompanyLogo.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="296.0" layoutY="-6.0" prefHeight="62.0" prefWidth="338.0" style="-fx-text-fill: GREEN;" text="HISTORY PAGE">
+         <font>
+            <Font size="42.0" />
+         </font>
+      </Label>
+      <GridPane fx:id="historyGridPane" layoutX="150.0" layoutY="91.0" prefHeight="30.0" prefWidth="630.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="80.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label prefHeight="40.0" prefWidth="153.0" text=" weldings type" GridPane.columnIndex="2">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label prefHeight="66.0" prefWidth="169.0" text=" exchange value" GridPane.columnIndex="4">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="153.0" text=" exchanges type" GridPane.columnIndex="3">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="168.0" layoutY="10.0" prefHeight="40.0" prefWidth="153.0" text=" time" GridPane.columnIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="136.0" layoutY="10.0" prefHeight="40.0" prefWidth="153.0" text=" date">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <Line endX="99.99996948242188" endY="200.0" layoutX="299.0" layoutY="267.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Line endX="100.0" endY="200.0" layoutX="426.0" layoutY="267.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Line endX="100.0" endY="200.0" layoutX="553.0" layoutY="267.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Line endX="99.99996948242188" endY="200.0" layoutX="50.0" layoutY="267.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Line endX="99.99996948242188" endY="200.0" layoutX="680.0" layoutY="267.0" startX="99.99996948242188" startY="-177.39999389648438" />
+      <Line endX="529.5" endY="-1.499969482421875" layoutX="250.0" layoutY="469.0" startX="-100.0" />
+      <Line endX="529.5" endY="-1.499969482421875" layoutX="251.0" layoutY="90.0" startX="-100.0" />
+      <AnchorPane layoutX="762.0" layoutY="56.0" onMouseMoved="#initializeWithMouseMove" prefHeight="201.0" prefWidth="154.0" />
+      <Line endX="99.99996948242188" endY="200.0" layoutX="176.0" layoutY="268.0" startX="99.99996948242188" startY="-177.39999389648438" />
+   </children>
+</AnchorPane>

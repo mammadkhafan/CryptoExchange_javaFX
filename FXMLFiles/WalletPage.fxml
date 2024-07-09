@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="930.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.PageControllers.WalletController">
    <children>
       <Label alignment="CENTER" layoutX="324.0" layoutY="-6.0" prefHeight="62.0" prefWidth="281.0" style="-fx-text-fill: GREEN;" text="WALLET PAGE">
          <font>
@@ -43,14 +43,6 @@
             <Label prefHeight="100.0" prefWidth="262.0" text="Coin" />
          </children>
       </GridPane>
-      <LineChart fx:id="welthChart" layoutX="483.0" layoutY="162.0" opacity="0.88" prefHeight="305.0" prefWidth="334.0">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
       <Line endX="-6.600006103515625" endY="-132.5" layoutX="408.0" layoutY="186.0" startX="-6.600006103515625" startY="414.0" />
       <Line endX="528.0" endY="-7.62939453125E-6" layoutX="402.0" layoutY="91.0" startX="-402.0" startY="-7.62939453125E-6" />
       <Label layoutX="77.0" layoutY="63.0" text="Amount of each coin in your coins welth">
@@ -77,11 +69,21 @@
             <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
             <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
             <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
             <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
             <MenuItem disable="true" mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
             <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />
          </items>
       </MenuButton>
       <FontAwesomeIcon fill="#26ae26" glyphName="BARS" layoutX="884.0" layoutY="39.0" onMouseClicked="#openPagesMenuButton" size="3em" text="" wrappingWidth="31.20013427734375" />
+      <BarChart fx:id="barChart" categoryGap="5.0" layoutX="416.0" layoutY="178.0" legendVisible="false" prefWidth="500.0">
+        <xAxis>
+            <CategoryAxis label="Hour" />
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Welth" tickUnit="10" upperBound="100.0" />
+        </yAxis>
+      </BarChart>
+      <AnchorPane layoutX="783.0" layoutY="99.0" onMouseMoved="#initializeWithMouseMove" prefHeight="93.0" prefWidth="104.0" />
    </children>
 </AnchorPane>

@@ -9,6 +9,7 @@ public class ComplitedExchange extends Exchange{
 
 
     public ComplitedExchange(User buyerUser, User sellerUser, CoinsNameAndIndex coinsNameAndIndex, int amountOfSoldCoins, double priceOfEachCoin) {
+        super();
         this.buyerUser = buyerUser;
         this.sellerUser = sellerUser;
         this.coinsNameAndIndex = coinsNameAndIndex;

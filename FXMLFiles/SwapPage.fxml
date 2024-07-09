@@ -20,6 +20,7 @@
             <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
             <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
             <MenuItem disable="true" mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
+            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
             <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
             <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />
             <MenuItem mnemonicParsing="false" onAction="#profileMenuItemPressed" text="Profile" />

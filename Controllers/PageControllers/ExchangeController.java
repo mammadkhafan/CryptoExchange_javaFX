@@ -41,9 +41,6 @@ public class ExchangeController extends PageController implements Initializable,
     private MenuButton pageMenuButton, choseYourCoinMenuButton;
 
     @FXML
-    private MenuItem homeMenuItem;
-
-    @FXML
     private RadioButton buyRadioButton, sellRadioButton;
 
     @FXML
@@ -189,10 +186,6 @@ public class ExchangeController extends PageController implements Initializable,
         Label exchangevalue = new Label(exchange.getCoinsName()
          + "(" + String.format("%.1f", exchange.getPriceOfEachCoin()) + ") * " + exchange.getAmountOfCoin());
 
-        weldingType.setAlignment(Pos.CENTER);
-        exchangeType.setAlignment(Pos.CENTER);
-        exchangevalue.setAlignment(Pos.CENTER);
-
         historyGridPane.add(weldingType, weldingsTypeColumn, row);
         historyGridPane.add(exchangeType, exchangeTypeColumn, row);
         historyGridPane.add(exchangevalue, exchangesValueColumn, row);
@@ -203,16 +196,16 @@ public class ExchangeController extends PageController implements Initializable,
     }
 
     public void removeRow(GridPane gridPane, int row) {
-    Set<Node> nodesToRemove = new HashSet<>();
+        Set<Node> nodesToRemove = new HashSet<>();
 
-    for (Node child : gridPane.getChildren()) {
-        Integer rowIndex = GridPane.getRowIndex(child);
-        if (rowIndex != null && rowIndex == row) {
-            nodesToRemove.add(child);
+        for (Node child : gridPane.getChildren()) {
+            Integer rowIndex = GridPane.getRowIndex(child);
+            if (rowIndex != null && rowIndex == row) {
+                nodesToRemove.add(child);
+            }
         }
-    }
 
-    gridPane.getChildren().removeAll(nodesToRemove);
+        gridPane.getChildren().removeAll(nodesToRemove);
     }
 
     @FXML

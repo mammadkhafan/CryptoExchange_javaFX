@@ -8,6 +8,7 @@ public class PendingExchange extends Exchange{
     private ExchangeType exchangeType;
 
     public PendingExchange(User user, ExchangeType exchangeType, CoinsNameAndIndex coinsNameAndIndex, int amountOfCoin, double priceOfEachCoin) {
+        super();
         this.user = user;
         this.exchangeType = exchangeType;
         this.coinsNameAndIndex = coinsNameAndIndex;

@@ -64,6 +64,7 @@ public class LoginController extends SignInMethods implements Initializable{
     public void afterLogin(ActionEvent event) throws IOException{
         /*HARD CODE */
         changeScene(event, "../../FXMLFiles/HomePage.fxml", "mammad");
+        //-----------
         Label[] messages = {usernameMessage, passwordMessage, captchaCodeMessage};
         if (isEveryThingOk(messages)) {
             if (Main.book.findUserWithUsernameAndPassword(usernameTextField.getText(), passwordPasswordField.getText())) {
