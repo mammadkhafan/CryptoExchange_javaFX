@@ -25,7 +25,7 @@ public class SwapController extends PageController implements Initializable, Lab
     private TextField amountTextField, destinationTextField;
 
     @FXML 
-    private Label originAndDestinationMessageLabel, amountOfSwapingLabel;
+    private Label originAndDestinationMessageLabel, amountOfSwapingLabel, swapResultLabel;
 
     @FXML
     private Button swapItButton;
@@ -114,11 +114,9 @@ public class SwapController extends PageController implements Initializable, Lab
         }
         else if 
         (user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(originMenuButton.getText()).getIndex()) - 1
-        < Double.parseDouble(amountTextField.getText()) 
-        * coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originMenuButton.getText()))) 
+        < Double.parseDouble(amountTextField.getText()) ) 
         {
             toError(originAndDestinationMessageLabel, ErrorMessage.lackOfAmount);
-            swapItButton.setDisable(true);
         } 
         else {
             swapItButton.setDisable(false);
@@ -166,17 +164,19 @@ public class SwapController extends PageController implements Initializable, Lab
 
     @FXML
     private void afterSwapIt() {
-        if (!(amountTextField.getText().equals("0") || originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination")) || swapItButton.isDisable()) {
+        if (!(amountTextField.getText().equals("0") || originMenuButton.getText().equals("Origin") || destinationMenuButton.getText().equals("Destination"))) {
             int originAmount = Integer.parseInt(amountTextField.getText());
             String originCoinsName = originMenuButton.getText();
             String destinationCoinsName = destinationMenuButton.getText();
 
-            double swapingPrice = originAmount * coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originCoinsName));
             double destinatoinDoubleAmount = originAmount * (coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(destinationCoinsName)) / coinsOfCSV.getPriceOfCoin(coinsOfCSV.getCurrentTimesRawOfCSVFile(), CoinsNameAndIndex.getCoinsNameAndIndexOfName(originCoinsName)));
             int destinatoinIntAmount = (int) destinatoinDoubleAmount;
 
             user.increseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(destinatoinIntAmount).getIndex(), destinatoinIntAmount);
             user.decreaseCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfIndex(originAmount).getIndex(), originAmount);
+            swapItButton.setText("Done!");
+        } else {
+            swapResultLabel.setText("check these: you set the origin amount on 0 of origin or destinatoin haven't sat");
         }
     }
 }

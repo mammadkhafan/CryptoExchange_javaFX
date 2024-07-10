@@ -1,6 +1,5 @@
 package Controllers.PageControllers;
 
-import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -15,7 +14,6 @@ import java.util.Set;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import BookPackage.Book;
 import BookPackage.ComplitedExchange;
 import BookPackage.Exchange;

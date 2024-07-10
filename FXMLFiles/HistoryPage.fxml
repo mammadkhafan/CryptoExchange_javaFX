@@ -19,9 +19,9 @@
       <MenuButton fx:id="pageMenuButton" layoutX="844.0" layoutY="4.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="80.0" style="-fx-background-color: WHITE; -fx-text-fill: WHITE;">
          <items>
             <MenuItem mnemonicParsing="false" onAction="#homeMenuItemPressed" text="Home" />
-            <MenuItem disable="true" mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
+            <MenuItem mnemonicParsing="false" onAction="#exchangeMenuItemPressed" text="Exchange" />
             <MenuItem mnemonicParsing="false" onAction="#swapMenuItemPressed" text="Swap" />
-            <MenuItem mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
+            <MenuItem disable="true" mnemonicParsing="false" onAction="#historyMenuItemPressed" text="History" />
             <MenuItem mnemonicParsing="false" onAction="#tokenMenuItemPressed" text="Token" />
             <MenuItem mnemonicParsing="false" onAction="#trensferMenuItemPressed" text="Transfer" />
             <MenuItem mnemonicParsing="false" onAction="#walletMenuItemPressed" text="Wallet" />

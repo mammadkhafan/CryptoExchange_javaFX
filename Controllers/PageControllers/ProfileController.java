@@ -3,14 +3,12 @@ package Controllers.PageControllers;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import Controllers.ForAllControllers.LabelFlexible;
 import Controllers.ForAllControllers.MostHaveInitialize;
 import Controllers.ForAllControllers.PageController;
 import Controllers.ForAllControllers.SignInMethods;
 import MainPackage.ErrorMessage;
 import MainPackage.Regex;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;

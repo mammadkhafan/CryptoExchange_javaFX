@@ -209,8 +209,11 @@ public class ExchangeController extends PageController implements Initializable,
 
     @FXML
     private void increaseAmountValue() {
-        int currentAmount = Integer.parseInt(amountTextField.getText());
-        amountTextField.setText(String.valueOf(currentAmount + 1));
+        if (checkAmountWithArrow()) {
+            int currentAmount = Integer.parseInt(amountTextField.getText());
+            amountTextField.setText(String.valueOf(currentAmount + 1));
+        }
+        
     }
 
     @FXML
@@ -222,9 +225,12 @@ public class ExchangeController extends PageController implements Initializable,
 
     @FXML
     private void increasePriceValue() {
-        double currentPrice = Double.parseDouble(priceTextField.getText());
-        String formattedPrice = String.format("%.1f", currentPrice + 0.1);
-        priceTextField.setText(formattedPrice);
+        if (checkPriceWithArrow()) {
+            double currentPrice = Double.parseDouble(priceTextField.getText());
+            String formattedPrice = String.format("%.1f", currentPrice + 0.1);
+            priceTextField.setText(formattedPrice);
+        }
+        
     }
 
     @FXML
@@ -237,55 +243,85 @@ public class ExchangeController extends PageController implements Initializable,
         }
     }
 
+    private boolean checkAmountWithArrow() {
+        if (buyRadioButton.isSelected()) {
+            return true;
+        }
+        if (!choseYourCoinMenuButton.getText().equals("Chose your coin")) {
+            if (user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()).getIndex()) < Integer.parseInt(amountTextField.getText()) + 1) {
+                toError(amountMessageLabel, ErrorMessage.lackOfAmount);
+                return false;
+            } else {
+                toInvisible(amountMessageLabel);
+                return true;
+            }
+        } else {
+            toError(amountMessageLabel, ErrorMessage.amountEmptyErrorMessage);
+            return false;
+        }
+    }
+
+    private boolean checkPriceWithArrow() {
+        if (sellRadioButton.isSelected()) {
+            return true;
+        }
+        if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText()) + 0.1) {
+            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+            return false;
+        } else {
+            toInvisible(priceMessageLabel);
+            return true;
+        }
+        
+    }
+
     @FXML
     private void afterRequestRegistration() {
         int amount = Integer.parseInt(amountTextField.getText());
         double price = Double.parseDouble(priceTextField.getText());
-        
-        boolean sw = true;
 
         if (amount == 0) {
             toError(amountMessageLabel, ErrorMessage.amountEmptyErrorMessage);
-            sw = false;
+            return;
         } else toInvisible(amountMessageLabel);
 
-        if (amount > user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()).getIndex())) {
-            sw = false;
+        if (amount > user.getCoinWelthAt(CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()).getIndex()) && sellRadioButton.isSelected()) {
             toError(amountMessageLabel, ErrorMessage.lackOfAmount);
+            return;
         } else toInvisible(amountMessageLabel);
 
-        if (price * amount > user.getMoneyWelth()) {
-            sw = false;
+        if (price * amount > user.getMoneyWelth() && buyRadioButton.isSelected()) {
             toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+            return;
         } else toInvisible(priceMessageLabel);
 
         if (price == 0.0) {
             toError(priceMessageLabel, ErrorMessage.priceEmptyErrorMessage);
-            sw = false;
+            return;
         } else toInvisible(priceMessageLabel);
 
         if (choseYourCoinMenuButton.getText().equals("Chose your coin")) {
             toError(choseYourCoinMessageLabel, ErrorMessage.choseYourCoinEmptyErrorMessage);
-            sw = false;
+            return;
         } else toInvisible(choseYourCoinMessageLabel);
 
         if (!buyRadioButton.isSelected() && !sellRadioButton.isSelected()) {
             toError(typeOfExchangeMessageLabel, ErrorMessage.typeOfExchangeDoesNotSelectedErrorMessage);
-            sw = false;
+            return;
         } else toInvisible(typeOfExchangeMessageLabel);
          
-        if (sw) {
-            PendingExchange newExchange = null;
-            if (buyRadioButton.isSelected()) {
-                newExchange = new PendingExchange(user, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
-            } 
-            else if (sellRadioButton.isSelected()) {
-                newExchange = new PendingExchange(user, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
-            }
 
-            String dealsResult = Main.book.weldTheDeal(newExchange).getDealsResult();
-            dealsResultlabel.setText(dealsResult);
+        PendingExchange newExchange = null;
+        if (buyRadioButton.isSelected()) {
+            newExchange = new PendingExchange(user, ExchangeType.BUY, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
+        } 
+        else if (sellRadioButton.isSelected()) {
+            newExchange = new PendingExchange(user, ExchangeType.SELL, CoinsNameAndIndex.getCoinsNameAndIndexOfName(choseYourCoinMenuButton.getText()), amount, price);
         }
+
+        String dealsResult = Main.book.weldTheDeal(newExchange).getDealsResult();
+        dealsResultlabel.setText(dealsResult);
+
     }
 
     @FXML

@@ -85,6 +85,6 @@
             <NumberAxis label="Welth" tickUnit="10" upperBound="100.0" />
         </yAxis>
       </BarChart>
-      <AnchorPane layoutX="783.0" layoutY="99.0" onMouseMoved="#initializeWithMouseMove" prefHeight="93.0" prefWidth="104.0" />
+      <AnchorPane layoutX="793.0" layoutY="99.0" onMouseMoved="#initializeWithMouseMove" prefHeight="246.0" prefWidth="134.0" />
    </children>
 </AnchorPane>

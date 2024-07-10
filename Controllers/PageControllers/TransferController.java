@@ -98,19 +98,21 @@ public class TransferController extends PageController implements Initializable,
 
     @FXML
     private void increaseAmountValue() {
-        if (checkAmountWithArrow()) {
-            int currentAmount = Integer.parseInt(amountTextField.getText());
-            amountTextField.setText(String.valueOf(currentAmount + 1));
+        if (!charge) {
+            if (checkAmountWithArrow()) {
+                int currentAmount = Integer.parseInt(amountTextField.getText());
+                amountTextField.setText(String.valueOf(currentAmount + 1));
+            }
         }
-        
-        
     }
 
     @FXML
     private void decreaseAmountValue() {
-        int currentAmount = Integer.parseInt(amountTextField.getText());
-        if (currentAmount - 1 >= 0) 
-            amountTextField.setText(String.valueOf(currentAmount - 1));
+        if (!charge) {
+            int currentAmount = Integer.parseInt(amountTextField.getText());
+            if (currentAmount - 1 >= 0) 
+                amountTextField.setText(String.valueOf(currentAmount - 1));
+        }
     }
 
     @FXML
@@ -130,6 +132,7 @@ public class TransferController extends PageController implements Initializable,
             formattedPrice += String.format("%.1f", currentPrice - 0.1);
             priceTextField.setText(formattedPrice);
         }
+        
     }
 
     @FXML
@@ -142,14 +145,20 @@ public class TransferController extends PageController implements Initializable,
             destinationUser = null;
             searchsResultIdLabel.setText("user not found");
             charge = false;
+            coinsNameMenuButton.setDisable(false);
+            amountTextField.setDisable(false);
         } else if (foundUser.equals(user)) {
             destinationUser = null;
             searchsResultIdLabel.setText("you are charging your wallet");
             charge = true;
+            coinsNameMenuButton.setDisable(true);
+            amountTextField.setDisable(true);
         } else {
             destinationUser = foundUser;
             searchsResultIdLabel.setText("user's username: " + destinationUser.getUsername());
             charge = false;
+            coinsNameMenuButton.setDisable(false);
+            amountTextField.setDisable(false);
         }
         
     }
@@ -170,16 +179,16 @@ public class TransferController extends PageController implements Initializable,
     }
 
     private boolean checkPriceWithArrow() {
-        if (!charge) {
-            if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText()) + 0.1) {
-                toError(priceMessageLabel, ErrorMessage.lackOfPrice);
-                return false;
-            } else {
-                toInvisible(priceMessageLabel);
-                return true;
-            }
+        if (charge) {
+            return true;
         }
-        return true;
+        if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText()) + 0.1) {
+            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+            return false;
+        } else {
+            toInvisible(priceMessageLabel);
+            return true;
+        }
         
     }
 
@@ -201,16 +210,13 @@ public class TransferController extends PageController implements Initializable,
 
     @FXML
     private boolean checkPrice() {
-        if (!charge) {
-            if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText())) {
-                toError(priceMessageLabel, ErrorMessage.lackOfPrice);
-                return false;
-            } else {
-                toInvisible(priceMessageLabel);
-                return true;
-            }
+        if (user.getMoneyWelth() < Double.parseDouble(priceTextField.getText())) {
+            toError(priceMessageLabel, ErrorMessage.lackOfPrice);
+            return false;
+        } else {
+            toInvisible(priceMessageLabel);
+            return true;
         }
-        return true;
     }
 
     @FXML 
@@ -219,22 +225,24 @@ public class TransferController extends PageController implements Initializable,
             transferMessageLabel.setText("set the correct wallet id for destinatoin wallet");
             return;
         }
-        else if (coinsNameMenuButton.getText().equals("Coins name") && amountTextField.getText().equals("0")) {
-            transferMessageLabel.setText("set Coins name");
+        if (charge) {
+            user.increaseMoneyWelth(Double.parseDouble(priceTextField.getText()));
+            transferMessageLabel.setText("Your wallets money welth now: " + user.getMoneyWelth());
             return;
         }
-        else if (!checkPrice()) {
+        if (!checkPrice()) {
             transferMessageLabel.setText("lack of money");
+            return;
+        }
+        if (coinsNameMenuButton.getText().equals("Coins name") && amountTextField.getText().equals("0")) {
+            transferMessageLabel.setText("set Coins name");
             return;
         }
         else if (!checkAmount()) {
             transferMessageLabel.setText("lack of coin");
             return;
         }
-        if (charge) {
-            user.increaseMoneyWelth(Double.parseDouble(priceTextField.getText()));
-            return;
-        }
+        
 
         transferMessageLabel.setText("Done!");
         destinationUser.increaseMoneyWelth(Double.parseDouble(priceTextField.getText()));
